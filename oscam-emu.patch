@@ -1,5 +1,5 @@
-patch version: 2.24.12-11857-802 (527d8e1a)
-patch date: 2024-12-07 09:49:33 UTC (+00:00)
+patch version: 2.24.12-11858-802 (73bb570f)
+patch date: 2024-12-08 13:06:16 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index eb09fcd3..44980840 100644
@@ -114,7 +114,7 @@ index 3d333a93..08b173ed 100644
  	  1 = send keepalive messages to keep connection to remote CCCam server up, default:0
  
 diff --git a/Makefile b/Makefile
-index f66a27f2..8f8d98b4 100644
+index e4a98aae..aafd79ce 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -32,6 +32,9 @@ ifeq "$(shell ./config.sh --enabled WITH_SSL)" "Y"
@@ -126,8 +126,8 @@ index f66a27f2..8f8d98b4 100644
 +endif
  ifdef USE_SSL
  	override USE_LIBCRYPTO=1
- endif
-@@ -366,6 +369,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
+ 	SSL_HEADER = $(shell find $(TOOLCHAIN_INC_DIR)/.. -name opensslv.h -print | tail -n 1)
+@@ -370,6 +373,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
  SRC-$(CONFIG_MODULE_CCCAM) += module-cccam.c
  SRC-$(CONFIG_MODULE_CCCSHARE) += module-cccshare.c
  SRC-$(CONFIG_MODULE_CONSTCW) += module-constcw.c
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 54e9e8c2..fe164e67 100644
+index af1624f3..21773a4b 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 54e9e8c2..fe164e67 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.24.12-11857"
+ #define CS_VERSION				"2.24.12-11858"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -503,7 +503,7 @@ index 54e9e8c2..fe164e67 100644
  #endif
  	uint8_t			cnxlastecm;						// == 0 - last ecm has not been paired ecm, > 0 last ecm has been paired ecm
  	LLIST			*emmstat;						// emm stats
-@@ -2458,6 +2476,10 @@ struct s_config
+@@ -2459,6 +2477,10 @@ struct s_config
  #else
  #define DEFAULT_STREAM_SOURCE_PORT 8001 //Enigma2
  #endif
@@ -514,7 +514,7 @@ index 54e9e8c2..fe164e67 100644
  #endif
  
  	int32_t			max_cache_time;					// seconds ecms are stored in ecmcwcache
-@@ -2643,12 +2665,18 @@ bool boxtype_is(const char *boxtype);
+@@ -2644,12 +2666,18 @@ bool boxtype_is(const char *boxtype);
  bool boxname_is(const char *boxname);
  const char *boxtype_get(void);
  const char *boxname_get(void);
@@ -533,7 +533,7 @@ index 54e9e8c2..fe164e67 100644
  static inline bool caid_is_betacrypt(uint16_t caid) { return caid >> 8 == 0x17; }
  static inline bool caid_is_nagra(uint16_t caid) { return caid >> 8 == 0x18; }
  static inline bool caid_is_bulcrypt(uint16_t caid) { return caid == 0x5581 || caid == 0x4AEE; }
-@@ -2656,4 +2684,8 @@ static inline bool caid_is_dre(uint16_t caid) { return caid == 0x4AE0 || caid ==
+@@ -2657,4 +2685,8 @@ static inline bool caid_is_dre(uint16_t caid) { return caid == 0x4AE0 || caid ==
  static inline bool caid_is_tongfang(uint16_t caid) { return caid == 0x4A02; }
  const char *get_cardsystem_desc_by_caid(uint16_t caid);
  
@@ -11771,7 +11771,7 @@ index 29b93646..66ce02a9 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 14e2b070..f7c929e1 100644
+index 7ce6e264..ce32eab5 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
@@ -11798,7 +11798,7 @@ index 14e2b070..f7c929e1 100644
  	tpl_printf(vars, TPLADD, "TMP", "STREAMRELAYENABLEDSELECTED%d", cfg.stream_relay_enabled);
  	tpl_addVar(vars, TPLADD, tpl_getVar(vars, "TMP"), "selected");
  
-@@ -2429,7 +2436,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -2430,7 +2437,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  		chk_reader("services", servicelabels, rdr);
  		chk_reader("lb_whitelist_services", servicelabelslb, rdr);
  
@@ -11807,7 +11807,7 @@ index 14e2b070..f7c929e1 100644
  		{
  			if(rdr)
  				{
-@@ -3206,6 +3213,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3207,6 +3214,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_printf(vars, TPLADD, "RESHARE",      "%d", cfg.cc_reshare);
  	tpl_printf(vars, TPLADD, "CCCRECONNECT", "%d", rdr->cc_reconnect);
  
@@ -11816,7 +11816,7 @@ index 14e2b070..f7c929e1 100644
  	if(rdr->cc_keepalive)
  		{ tpl_addVar(vars, TPLADD, "KEEPALIVECHECKED", "checked"); }
  #endif
-@@ -3243,6 +3252,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3244,6 +3253,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_addVar(vars, TPLADD, "USERSCRIPT", rdr->userscript);
  #endif
  
@@ -11840,7 +11840,7 @@ index 14e2b070..f7c929e1 100644
  	tpl_addVar(vars, TPLADD, "PROTOCOL", reader_get_type_desc(rdr, 0));
  
  	// Show only parameters which needed for the reader
-@@ -3264,6 +3290,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3265,6 +3291,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	case R_CAMD35 :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCAMD35BIT"));
  		break;
@@ -11850,7 +11850,7 @@ index 14e2b070..f7c929e1 100644
  	case R_CS378X :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCS378XBIT"));
  		break;
-@@ -5292,9 +5321,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
+@@ -5293,9 +5322,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
  
  					tpl_addVar(vars, TPLAPPEND, "LOGHISTORY", "<BR><BR>New Structure:<BR>");
  					char tbuffer[83];
@@ -11885,7 +11885,7 @@ index 14e2b070..f7c929e1 100644
  						localtime_r(&item->start, &start_t);
  						localtime_r(&item->end, &end_t);
  
-@@ -5788,6 +5842,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
+@@ -5789,6 +5843,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
  						filtered = (type == cl->typ) || (type == 'x' && (cl->typ == 'p' || cl->typ == 'r') && (cl->reader && cl->reader->cacheex.mode));
  #else
  						filtered = (type == cl->typ);
@@ -11895,7 +11895,7 @@ index 14e2b070..f7c929e1 100644
  #endif
  					}
  				}
-@@ -7361,6 +7418,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7362,6 +7419,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11905,7 +11905,7 @@ index 14e2b070..f7c929e1 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7833,7 +7893,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7834,7 +7894,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11918,7 +11918,7 @@ index 14e2b070..f7c929e1 100644
  		}
  
  		if(csystem)
-@@ -9002,7 +9066,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9003,7 +9067,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
@@ -11971,10 +11971,10 @@ index b3791534..5caf94fa 100644
  		return 1; // reader caid is not real caid
  	}
 diff --git a/oscam-config-global.c b/oscam-config-global.c
-index 22255e9d..74e4e974 100644
+index bd6178f0..4c8adbf5 100644
 --- a/oscam-config-global.c
 +++ b/oscam-config-global.c
-@@ -929,6 +929,10 @@ static const struct config_list streamrelay_opts[] =
+@@ -930,6 +930,10 @@ static const struct config_list streamrelay_opts[] =
  	DEF_OPT_INT8("stream_relay_enabled"          , OFS(stream_relay_enabled),         0),
  	DEF_OPT_UINT32("stream_relay_buffer_time"    , OFS(stream_relay_buffer_time),     0),
  	DEF_OPT_UINT8("stream_relay_reconnect_count" , OFS(stream_relay_reconnect_count), 0),
