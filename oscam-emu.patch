@@ -1,5 +1,5 @@
-patch version: 2.24.12-11860-802 (850fde71)
-patch date: 2024-12-10 01:18:51 UTC (+00:00)
+patch version: 2.24.12-11861-802 (ca410d44)
+patch date: 2024-12-16 15:14:02 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index eb09fcd3..44980840 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index c2488d88..3e15dd20 100644
+index d9853e4a..2c5a78e8 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index c2488d88..3e15dd20 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.24.12-11860"
+ #define CS_VERSION				"2.24.12-11861"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -10523,12 +10523,12 @@ index ed0e85e4..ee179b79 100644
  				prv = ea;
  				continue; // proxy can convert or reject
 diff --git a/module-streamrelay.c b/module-streamrelay.c
-index 04866ba5..27684575 100644
+index c4ec5ae7..2d91a00e 100644
 --- a/module-streamrelay.c
 +++ b/module-streamrelay.c
-@@ -14,6 +14,12 @@
+@@ -15,6 +15,12 @@
+ #include "oscam-string.h"
  #include "oscam-time.h"
- #include "oscam-chk.h"
  
 +#ifdef WITH_EMU
 +#include "cscrypt/des.h"
@@ -10539,7 +10539,7 @@ index 04866ba5..27684575 100644
  #define STREAM_UNDEFINED 0x00
  #define STREAM_VIDEO     0x01
  #define STREAM_AUDIO     0x02
-@@ -28,18 +34,32 @@ typedef struct
+@@ -29,18 +35,32 @@ typedef struct
  	int32_t connid;
  } stream_client_conn_data;
  
@@ -10579,7 +10579,7 @@ index 04866ba5..27684575 100644
  
  #ifdef MODULE_RADEGAST
  static int32_t gRadegastFd = 0;
-@@ -131,10 +151,13 @@ static void radegast_client_ecm(stream_client_data *cdata)
+@@ -132,10 +152,13 @@ static void radegast_client_ecm(stream_client_data *cdata)
  		}
  	}
  }
@@ -10593,7 +10593,7 @@ index 04866ba5..27684575 100644
  	uint16_t section_length = SCT_LEN(data);
  
  	if (section_length < 11)
-@@ -142,9 +165,35 @@ void ParseEcmData(stream_client_data *cdata)
+@@ -143,9 +166,35 @@ void ParseEcmData(stream_client_data *cdata)
  		return;
  	}
  
@@ -10631,7 +10631,7 @@ index 04866ba5..27684575 100644
  
  static void write_cw(ECM_REQUEST *er, int32_t connid)
  {
-@@ -155,7 +204,11 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
+@@ -156,7 +205,11 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
  	{
  		if (has_dvbcsa_ecm)
  		{
@@ -10643,7 +10643,7 @@ index 04866ba5..27684575 100644
  		}
  	}
  
-@@ -163,31 +216,36 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
+@@ -164,31 +217,36 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
  	{
  		if (has_dvbcsa_ecm)
  		{
@@ -10693,7 +10693,7 @@ index 04866ba5..27684575 100644
  }
  
  static void SearchTsPackets(const uint8_t *buf, const uint32_t bufLength, uint16_t *packetSize, uint16_t *startOffset)
-@@ -335,6 +393,9 @@ static void ParsePatData(stream_client_data *cdata)
+@@ -336,6 +394,9 @@ static void ParsePatData(stream_client_data *cdata)
  {
  	int32_t i;
  	uint16_t srvid;
@@ -10703,7 +10703,7 @@ index 04866ba5..27684575 100644
  	for (i = 8; i + 7 < SCT_LEN(cdata->pat_data); i += 4)
  	{
  		srvid = b2i(2, cdata->pat_data + i);
-@@ -353,6 +414,21 @@ static void ParsePatData(stream_client_data *cdata)
+@@ -354,6 +415,21 @@ static void ParsePatData(stream_client_data *cdata)
  	}
  }
  
@@ -10725,7 +10725,7 @@ index 04866ba5..27684575 100644
  static void ParseDescriptors(const uint8_t *buffer, const uint16_t info_length, uint8_t *type)
  {
  	uint32_t i;
-@@ -528,6 +604,9 @@ static void ParsePmtData(stream_client_data *cdata)
+@@ -529,6 +605,9 @@ static void ParsePmtData(stream_client_data *cdata)
  			case 0xD1:
  			case 0xEA:
  			{
@@ -10735,7 +10735,7 @@ index 04866ba5..27684575 100644
  				cs_log_dbg(D_READER, "Stream client %i found video pid: 0x%04X (%i)",
  							cdata->connid, elementary_pid, elementary_pid);
  				stream_parse_pmt_ca_descriptor(cdata->pmt_data, i, 5, es_info_length, cdata);
-@@ -542,6 +621,15 @@ static void ParsePmtData(stream_client_data *cdata)
+@@ -543,6 +622,15 @@ static void ParsePmtData(stream_client_data *cdata)
  			case 0x2E:
  			case 0x81:
  			{
@@ -10751,7 +10751,7 @@ index 04866ba5..27684575 100644
  				cs_log_dbg(D_READER, "Stream client %i found audio pid: 0x%04X (%i)",
  							cdata->connid, elementary_pid, elementary_pid);
  				break;
-@@ -554,20 +642,88 @@ static void ParsePmtData(stream_client_data *cdata)
+@@ -555,20 +643,88 @@ static void ParsePmtData(stream_client_data *cdata)
  				ParseDescriptors(cdata->pmt_data + i + 5, es_info_length, &type);
  				if (type == STREAM_AUDIO)
  				{
@@ -10840,7 +10840,7 @@ index 04866ba5..27684575 100644
  static void ParseTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32_t bufLength, uint16_t packetSize)
  {
  	uint8_t payloadStart;
-@@ -616,7 +772,11 @@ static void ParseTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32
+@@ -617,7 +773,11 @@ static void ParseTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32
  	}
  }
  
@@ -10853,7 +10853,7 @@ index 04866ba5..27684575 100644
  {
  	if (fill[oddeven] > 0)
  	{
-@@ -634,10 +794,531 @@ static void decrypt(struct dvbcsa_bs_batch_s *tsbbatch, uint16_t fill[2], const
+@@ -635,10 +795,531 @@ static void decrypt(struct dvbcsa_bs_batch_s *tsbbatch, uint16_t fill[2], const
  
  		fill[oddeven] = 0;
  
@@ -11386,7 +11386,7 @@ index 04866ba5..27684575 100644
  
  static void DescrambleTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32_t bufLength, uint16_t packetSize, struct dvbcsa_bs_batch_s *tsbbatch)
  {
-@@ -662,6 +1343,31 @@ static void DescrambleTsPackets(stream_client_data *data, uint8_t *stream_buf, u
+@@ -663,6 +1344,31 @@ static void DescrambleTsPackets(stream_client_data *data, uint8_t *stream_buf, u
  			continue;
  		}
  #ifdef MODULE_RADEGAST
@@ -11418,7 +11418,7 @@ index 04866ba5..27684575 100644
  		if (data->ecm_pid && pid == data->ecm_pid) // Process the ECM data
  		{
  			// set to null pid
-@@ -750,6 +1456,9 @@ static void stream_client_disconnect(stream_client_conn_data *conndata)
+@@ -751,6 +1457,9 @@ static void stream_client_disconnect(stream_client_conn_data *conndata)
  
  	SAFE_MUTEX_LOCK(&fixed_key_srvid_mutex);
  	stream_cur_srvid[conndata->connid] = NO_SRVID_VALUE;
@@ -11428,7 +11428,7 @@ index 04866ba5..27684575 100644
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
  	SAFE_MUTEX_LOCK(&stream_server_mutex);
-@@ -787,10 +1496,12 @@ static void *stream_client_handler(void *arg)
+@@ -788,10 +1497,12 @@ static void *stream_client_handler(void *arg)
  	uint16_t packetCount = 0, packetSize = 0, startOffset = 0;
  	uint32_t remainingDataPos, remainingDataLength, tmp_pids[4];
  	uint8_t descrambling = 0;
@@ -11442,8 +11442,8 @@ index 04866ba5..27684575 100644
 +#endif
  	struct dvbcsa_bs_batch_s *tsbbatch;
  
- 	cs_log("Stream client %i connected", conndata->connid);
-@@ -870,8 +1581,16 @@ static void *stream_client_handler(void *arg)
+ 	struct s_client *cl = create_client(get_null_ip());
+@@ -879,8 +1590,16 @@ static void *stream_client_handler(void *arg)
  		return NULL;
  	}
  
@@ -11460,7 +11460,7 @@ index 04866ba5..27684575 100644
  
  	if (!cs_malloc(&tsbbatch, (cluster_size + 1) * sizeof(struct dvbcsa_bs_batch_s)))
  	{
-@@ -884,6 +1603,9 @@ static void *stream_client_handler(void *arg)
+@@ -893,6 +1612,9 @@ static void *stream_client_handler(void *arg)
  
  	SAFE_MUTEX_LOCK(&fixed_key_srvid_mutex);
  	stream_cur_srvid[conndata->connid] = data->srvid;
@@ -11470,7 +11470,7 @@ index 04866ba5..27684575 100644
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
  	cs_log("Stream client %i request %s", conndata->connid, stream_path);
-@@ -901,6 +1623,9 @@ static void *stream_client_handler(void *arg)
+@@ -910,6 +1632,9 @@ static void *stream_client_handler(void *arg)
  	data->have_cat_data = 0;
  	data->have_ecm_data = 0;
  	data->have_emm_data = 0;
@@ -11480,7 +11480,7 @@ index 04866ba5..27684575 100644
  
  	while (!exit_oscam && clientStatus != -1 && streamConnectErrorCount < 3
  			&& streamDataErrorCount < 15)
-@@ -922,6 +1647,18 @@ static void *stream_client_handler(void *arg)
+@@ -931,6 +1656,18 @@ static void *stream_client_handler(void *arg)
  				&& (streamConnectErrorCount < 3 || streamDataErrorCount < 15))
  #endif
  		{
@@ -11499,7 +11499,7 @@ index 04866ba5..27684575 100644
  			streamStatus = recv(streamfd, stream_buf + bytesRead, cur_dvb_buffer_size - bytesRead, MSG_WAITALL);
  			if (streamStatus == 0) // socket closed
  			{
-@@ -1004,13 +1741,30 @@ static void *stream_client_handler(void *arg)
+@@ -1013,13 +1750,30 @@ static void *stream_client_handler(void *arg)
  					// We have both PAT and PMT data - We can start descrambling
  					if (data->have_pat_data == 1 && data->have_pmt_data == 1)
  					{
@@ -11531,7 +11531,7 @@ index 04866ba5..27684575 100644
  						}
  						else
  						{
-@@ -1047,9 +1801,16 @@ static void *stream_client_handler(void *arg)
+@@ -1056,9 +1810,16 @@ static void *stream_client_handler(void *arg)
  
  	NULLFREE(http_buf);
  	NULLFREE(stream_buf);
@@ -11549,7 +11549,7 @@ index 04866ba5..27684575 100644
  	NULLFREE(tsbbatch);
  
  	NULLFREE(data);
-@@ -1100,6 +1861,9 @@ void *stream_server(void *UNUSED(a))
+@@ -1112,6 +1873,9 @@ static void *stream_server(void *cl)
  	for (i = 0; i < STREAM_SERVER_MAX_CONNECTIONS; i++)
  	{
  		stream_cur_srvid[i] = NO_SRVID_VALUE;
@@ -11559,15 +11559,17 @@ index 04866ba5..27684575 100644
  	}
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
-@@ -1245,11 +2009,85 @@ void init_stream_server(void)
+@@ -1257,6 +2021,9 @@ void init_stream_server(void)
  			b64encode(authtmp, cs_strlen(authtmp), &stream_source_auth);
  		}
  
 +#ifdef WITH_EMU
 +		emu_stream_emm_enabled = cfg.emu_stream_emm_enabled;
 +#endif
- 		start_thread("stream_server", stream_server, NULL, NULL, 1, 1);
- 		cs_log("Stream Relay server initialized");
+ 		struct s_client *cl = cur_client();
+ 		if (start_thread("stream_server", stream_server, (void *)cl, NULL, 1, 1) == 0)
+ 		{
+@@ -1265,6 +2032,77 @@ void init_stream_server(void)
  	}
  }
  
@@ -11646,7 +11648,7 @@ index 04866ba5..27684575 100644
  {
  	int32_t i;
 diff --git a/module-streamrelay.h b/module-streamrelay.h
-index 71e97b53..6e839660 100644
+index 4425e020..42ec2351 100644
 --- a/module-streamrelay.h
 +++ b/module-streamrelay.h
 @@ -10,26 +10,47 @@
@@ -11726,8 +11728,8 @@ index 71e97b53..6e839660 100644
 +#endif
  } stream_client_data;
  
- void *stream_server(void *a);
-@@ -66,6 +100,30 @@ void stop_stream_server(void);
+ void init_stream_server(void);
+@@ -65,6 +99,30 @@ void stop_stream_server(void);
  
  bool stream_write_cw(ECM_REQUEST *er);
  
@@ -12152,7 +12154,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index 7b6395db..175595a8 100644
+index 5f66fb42..f6fbf847 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -41,6 +41,10 @@
@@ -12185,16 +12187,16 @@ index 7b6395db..175595a8 100644
  
  	NULL
  };
-@@ -1856,6 +1865,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1854,6 +1863,9 @@ int32_t main(int32_t argc, char *argv[])
+ 
+ 	init_sidtab();
  	init_readerdb();
- #ifdef MODULE_STREAMRELAY
- 	init_stream_server();
-+#endif
 +#ifdef WITH_EMU
 +	add_emu_reader();
- #endif
++#endif
  	cfg.account = init_userdb();
  	init_signal();
+ 	init_provid();
 diff --git a/reader-common.c b/reader-common.c
 index efdd19b3..2c8fc7dd 100644
 --- a/reader-common.c
