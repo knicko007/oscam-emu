@@ -1,5 +1,5 @@
-patch version: 2.24.12-11862-802 (fcf0003d)
-patch date: 2024-12-18 12:34:02 UTC (+00:00)
+patch version: 2.24.12-11863-802 (58c12d43)
+patch date: 2024-12-19 06:23:43 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index eb09fcd3..44980840 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 333edefc..ea6c8b9b 100644
+index 029f6e8b..45081d50 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 333edefc..ea6c8b9b 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.24.12-11862"
+ #define CS_VERSION				"2.24.12-11863"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -10523,7 +10523,7 @@ index ed0e85e4..ee179b79 100644
  				prv = ea;
  				continue; // proxy can convert or reject
 diff --git a/module-streamrelay.c b/module-streamrelay.c
-index c4ec5ae7..2d91a00e 100644
+index 06296e90..c0146f3a 100644
 --- a/module-streamrelay.c
 +++ b/module-streamrelay.c
 @@ -15,6 +15,12 @@
@@ -11443,7 +11443,7 @@ index c4ec5ae7..2d91a00e 100644
  	struct dvbcsa_bs_batch_s *tsbbatch;
  
  	struct s_client *cl = create_client(get_null_ip());
-@@ -879,8 +1590,16 @@ static void *stream_client_handler(void *arg)
+@@ -880,8 +1591,16 @@ static void *stream_client_handler(void *arg)
  		return NULL;
  	}
  
@@ -11460,7 +11460,7 @@ index c4ec5ae7..2d91a00e 100644
  
  	if (!cs_malloc(&tsbbatch, (cluster_size + 1) * sizeof(struct dvbcsa_bs_batch_s)))
  	{
-@@ -893,6 +1612,9 @@ static void *stream_client_handler(void *arg)
+@@ -894,6 +1613,9 @@ static void *stream_client_handler(void *arg)
  
  	SAFE_MUTEX_LOCK(&fixed_key_srvid_mutex);
  	stream_cur_srvid[conndata->connid] = data->srvid;
@@ -11470,7 +11470,7 @@ index c4ec5ae7..2d91a00e 100644
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
  	cs_log("Stream client %i request %s", conndata->connid, stream_path);
-@@ -910,6 +1632,9 @@ static void *stream_client_handler(void *arg)
+@@ -911,6 +1633,9 @@ static void *stream_client_handler(void *arg)
  	data->have_cat_data = 0;
  	data->have_ecm_data = 0;
  	data->have_emm_data = 0;
@@ -11480,7 +11480,7 @@ index c4ec5ae7..2d91a00e 100644
  
  	while (!exit_oscam && clientStatus != -1 && streamConnectErrorCount < 3
  			&& streamDataErrorCount < 15)
-@@ -931,6 +1656,18 @@ static void *stream_client_handler(void *arg)
+@@ -932,6 +1657,18 @@ static void *stream_client_handler(void *arg)
  				&& (streamConnectErrorCount < 3 || streamDataErrorCount < 15))
  #endif
  		{
@@ -11499,7 +11499,7 @@ index c4ec5ae7..2d91a00e 100644
  			streamStatus = recv(streamfd, stream_buf + bytesRead, cur_dvb_buffer_size - bytesRead, MSG_WAITALL);
  			if (streamStatus == 0) // socket closed
  			{
-@@ -1013,13 +1750,30 @@ static void *stream_client_handler(void *arg)
+@@ -1014,13 +1751,30 @@ static void *stream_client_handler(void *arg)
  					// We have both PAT and PMT data - We can start descrambling
  					if (data->have_pat_data == 1 && data->have_pmt_data == 1)
  					{
@@ -11531,7 +11531,7 @@ index c4ec5ae7..2d91a00e 100644
  						}
  						else
  						{
-@@ -1056,9 +1810,16 @@ static void *stream_client_handler(void *arg)
+@@ -1057,9 +1811,16 @@ static void *stream_client_handler(void *arg)
  
  	NULLFREE(http_buf);
  	NULLFREE(stream_buf);
@@ -11549,7 +11549,7 @@ index c4ec5ae7..2d91a00e 100644
  	NULLFREE(tsbbatch);
  
  	NULLFREE(data);
-@@ -1112,6 +1873,9 @@ static void *stream_server(void *cl)
+@@ -1113,6 +1874,9 @@ static void *stream_server(void *cl)
  	for (i = 0; i < STREAM_SERVER_MAX_CONNECTIONS; i++)
  	{
  		stream_cur_srvid[i] = NO_SRVID_VALUE;
@@ -11559,7 +11559,7 @@ index c4ec5ae7..2d91a00e 100644
  	}
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
-@@ -1257,6 +2021,9 @@ void init_stream_server(void)
+@@ -1258,6 +2022,9 @@ void init_stream_server(void)
  			b64encode(authtmp, cs_strlen(authtmp), &stream_source_auth);
  		}
  
@@ -11569,7 +11569,7 @@ index c4ec5ae7..2d91a00e 100644
  		struct s_client *cl = cur_client();
  		if (start_thread("stream_server", stream_server, (void *)cl, NULL, 1, 1) == 0)
  		{
-@@ -1265,6 +2032,77 @@ void init_stream_server(void)
+@@ -1266,6 +2033,77 @@ void init_stream_server(void)
  	}
  }
  
