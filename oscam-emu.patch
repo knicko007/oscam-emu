@@ -1,5 +1,5 @@
-patch version: 2.25.02-11870-802 (3bb1f43e)
-patch date: 2025-02-27 01:13:18 UTC (+00:00)
+patch version: 2.25.03-11871-802 (902bff42)
+patch date: 2025-03-03 18:22:06 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index eb09fcd3..44980840 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index e4ba02f9..8644a3b3 100644
+index a20dcbc4..4d48e4ca 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index e4ba02f9..8644a3b3 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.02-11870"
+ #define CS_VERSION				"2.25.03-11871"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
