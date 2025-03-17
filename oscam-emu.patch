@@ -1,5 +1,5 @@
-patch version: 2.25.03-11873-802 (66079649)
-patch date: 2025-03-17 01:17:23 UTC (+00:00)
+patch version: 2.25.03-11874-802 (a32ffba4)
+patch date: 2025-03-17 12:34:57 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index eb09fcd3..44980840 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 9cc4186d..c5e72b1e 100644
+index abe638c2..d742ffa9 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 9cc4186d..c5e72b1e 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.03-11873"
+ #define CS_VERSION				"2.25.03-11874"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -12299,7 +12299,7 @@ index 00000000..cf718779
 @@ -0,0 +1 @@
 +			<LI CLASS="##CMENUACTIVE30##"><A HREF="files.html?file=SoftCam.Key">SoftCam.Key</A></LI>
 diff --git a/webif/pages_index.txt b/webif/pages_index.txt
-index f051a1ab..e7c441f6 100644
+index a104089b..fd1c857e 100644
 --- a/webif/pages_index.txt
 +++ b/webif/pages_index.txt
 @@ -1,10 +1,10 @@
@@ -12324,7 +12324,7 @@ index f051a1ab..e7c441f6 100644
  DEMUXERFIX                    config/dvbapi_demuxerfix.html                               MODULE_STREAMRELAY
  CCCAMRESHAREBIT               config/cccreshare.html                                      MODULE_GBOX
  CONFIGGBOX                    config/gbox.html                                            MODULE_GBOX
-@@ -91,6 +91,7 @@ CONFIGMENUNEWCAMD             config/menu_newcamd.html
+@@ -92,6 +92,7 @@ CONFIGMENUNEWCAMD             config/menu_newcamd.html
  CONFIGMENURADEGAST            config/menu_radegast.html                                   MODULE_RADEGAST
  CONFIGMENUSCAM                config/menu_scam.html                                       MODULE_SCAM
  CONFIGMENUSTREAMRELAY         config/menu_streamrelay.html                                MODULE_STREAMRELAY
@@ -12332,7 +12332,7 @@ index f051a1ab..e7c441f6 100644
  CONFIGMENUSERIAL              config/menu_serial.html                                     MODULE_SERIAL
  CONFIGMONITOR                 config/monitor.html                                         MODULE_MONITOR
  CONFIGNEWCAMD                 config/newcamd.html                                         MODULE_NEWCAMD
-@@ -130,6 +131,7 @@ FILEMENUDVBAPI                files/menu_dvbapi.html
+@@ -131,6 +132,7 @@ FILEMENUDVBAPI                files/menu_dvbapi.html
  FILEMENUFAKECWS               files/menu_fakecws.html                                     CS_CACHEEX
  FILEMENUGBOX                  files/menu_gbox.html                                        MODULE_GBOX
  FILEMENUTWIN                  files/menu_twin.html                                        MODULE_SERIAL
@@ -12340,7 +12340,7 @@ index f051a1ab..e7c441f6 100644
  
  AUTOCONF                      ghttp/autoconf.html                                         MODULE_GHTTP
  PREAUTOCONF                   ghttp/pre_autoconf.html                                     MODULE_GHTTP
-@@ -198,6 +200,7 @@ READEREDITCACHEEXBIT          readerconfig/readerconfig_cacheexbit.html
+@@ -199,6 +201,7 @@ READEREDITCACHEEXBIT          readerconfig/readerconfig_cacheexbit.html
  READEREDITCACHEEXAIOBIT       readerconfig/readerconfig_cacheexaiobit.html                CS_CACHEEX_AIO
  READERCONFIGCAMD35BIT         readerconfig/readerconfig_camd35bit.html                    MODULE_CAMD35
  READERCONFIGCCCAMBIT          readerconfig/readerconfig_cccambit.html                     MODULE_CCCAM
