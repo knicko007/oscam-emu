@@ -1,5 +1,5 @@
-patch version: 2.25.03-11878-802 (e6b928d6)
-patch date: 2025-03-25 18:22:58 UTC (+00:00)
+patch version: 2.25.04-11880-802 (208972e6)
+patch date: 2025-04-22 06:24:43 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index eb09fcd3..44980840 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 022b8c69..e95b39cd 100644
+index c5b3372e..5b16bc16 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 022b8c69..e95b39cd 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.03-11878"
+ #define CS_VERSION				"2.25.04-11880"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -627,7 +627,7 @@ index c89815c8..febbbad0 100644
  				xcard = ncard; // remember card (D+ / 1810 fix) if request has no provider, but card has
  			}
 diff --git a/module-cw-cycle-check.c b/module-cw-cycle-check.c
-index c8617d32..f9cc8108 100644
+index 5a99d325..5e6dda5f 100644
 --- a/module-cw-cycle-check.c
 +++ b/module-cw-cycle-check.c
 @@ -123,7 +123,9 @@ static uint8_t checkvalidCW(ECM_REQUEST *er)
@@ -11778,7 +11778,7 @@ index 29b93646..66ce02a9 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 09665d9b..95451f4f 100644
+index cbe97391..51c4e640 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
