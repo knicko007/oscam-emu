@@ -1,8 +1,8 @@
-patch version: 2.25.04-11880-802 (208972e6)
-patch date: 2025-04-22 06:24:43 UTC (+00:00)
+patch version: 2.25.04-11881-802 (444cbcfb)
+patch date: 2025-04-25 20:32:35 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index eb09fcd3..44980840 100644
+index 4b08cfc0..98dccbbf 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -534,6 +534,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
@@ -174,7 +174,7 @@ index 03c70f7d..9b99c3c4 100644
        readers: READER_NAGRA READER_NAGRA_MERLIN READER_IRDETO READER_CONAX READER_CRYPTOWORKS READER_SECA READER_VIACCESS READER_VIDEOGUARD READER_DRE READER_TONGFANG READER_BULCRYPT READER_GRIFFIN READER_DGCRYPT
   card_readers: CARDREADER_PHOENIX CARDREADER_INTERNAL CARDREADER_SC8IN1 CARDREADER_MP35 CARDREADER_SMARGO CARDREADER_DB2COM CARDREADER_STAPI CARDREADER_STAPI5 CARDREADER_STINGER CARDREADER_DRECAS
 diff --git a/README.md b/README.md
-index 8d1c6e93..13cc08c3 100644
+index fea2de8c..23597add 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,14 +1,18 @@
@@ -192,9 +192,9 @@ index 8d1c6e93..13cc08c3 100644
  =======
  
 -OSCam: Open Source CAM
--Copyright (C) 2009-2024 OSCam developers
+-Copyright (C) 2009-2025 OSCam developers
 +OSCam-Emu: Open Source CAM with Emulator
-+Copyright (C) 2009-2024 OSCam-Emu developers
++Copyright (C) 2009-2025 OSCam-Emu developers
  
 -OSCam is based on the Streamboard mp-cardserver 0.9d by dukat and
 +OSCam-Emu is based on the Streamboard mp-cardserver 0.9d by dukat and
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index c5b3372e..5b16bc16 100644
+index e197dd15..8b2e64f0 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index c5b3372e..5b16bc16 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.04-11880"
+ #define CS_VERSION				"2.25.04-11881"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -12158,7 +12158,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index e10ee654..da40f70b 100644
+index 6324f106..ce511fcf 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -41,6 +41,10 @@
