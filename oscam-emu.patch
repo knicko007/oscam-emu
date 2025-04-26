@@ -1,5 +1,5 @@
-patch version: 2.25.04-11881-802 (444cbcfb)
-patch date: 2025-04-25 20:32:35 UTC (+00:00)
+patch version: 2.25.04-11882-802 (5b0e21fc)
+patch date: 2025-04-26 01:16:51 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4b08cfc0..98dccbbf 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index e197dd15..8b2e64f0 100644
+index 8274ccda..1634b3ad 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index e197dd15..8b2e64f0 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.04-11881"
+ #define CS_VERSION				"2.25.04-11882"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -10474,7 +10474,7 @@ index 00000000..865e6687
 +
 +#endif // WITH_EMU
 diff --git a/module-newcamd.c b/module-newcamd.c
-index 95fdae7e..5514962d 100644
+index fc3f83cf..7c23924c 100644
 --- a/module-newcamd.c
 +++ b/module-newcamd.c
 @@ -1118,6 +1118,13 @@ static int8_t newcamd_auth_client(IN_ADDR_T ip, uint8_t *deskey)
