@@ -1,5 +1,5 @@
-patch version: 2.25.05-11883-802 (a2828606)
-patch date: 2025-05-04 18:22:15 UTC (+00:00)
+patch version: 2.25.05-11884-802 (76c92a2c)
+patch date: 2025-05-06 01:20:39 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4b08cfc0..98dccbbf 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 0f978ddd..821d20a2 100644
+index e1b3d7f6..45a98092 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 0f978ddd..821d20a2 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.05-11883"
+ #define CS_VERSION				"2.25.05-11884"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -705,7 +705,7 @@ index 2adf4518..76f0a6ff 100644
  			ErrorCode = oscam_sttkd_KeyWrite(tkd_desc_info[demux[demux_id].dev_index].key_hndl, l, cw + (l * 8));
  
 diff --git a/module-dvbapi.c b/module-dvbapi.c
-index 1ccdb46e..2f0fcea7 100644
+index 894e414e..c1f6109b 100644
 --- a/module-dvbapi.c
 +++ b/module-dvbapi.c
 @@ -1883,7 +1883,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
@@ -12100,7 +12100,7 @@ index cadd2de9..9ded1fbd 100644
  		cs_log_dbg(D_TRACE, "warning: ecm with null odd/even byte from %s", (check_client(er->client) ? er->client->account->usr : "-"));
  		er->rc = E_INVALID;
 diff --git a/oscam-emm.c b/oscam-emm.c
-index 7508a0ff..dc85a35c 100644
+index f91c0daa..1d3e1e3a 100644
 --- a/oscam-emm.c
 +++ b/oscam-emm.c
 @@ -40,6 +40,7 @@ static int8_t cs_emmlen_is_blocked(struct s_reader *rdr, int16_t len)
