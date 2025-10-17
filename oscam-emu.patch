@@ -1,5 +1,5 @@
-patch version: 2.25.10-11895-802 (1fa6d674)
-patch date: 2025-10-17 12:35:43 UTC (+00:00)
+patch version: 2.25.10-11898-802 (65127d95)
+patch date: 2025-10-17 18:22:07 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4b08cfc0..98dccbbf 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 51e3f207..762e31cf 100644
+index 752270f5..4b387332 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 51e3f207..762e31cf 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.10-11895"
+ #define CS_VERSION				"2.25.10-11898"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -11778,7 +11778,7 @@ index 29b93646..66ce02a9 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index cbe97391..51c4e640 100644
+index 0a6f18c6..2c51a17e 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
@@ -11804,7 +11804,7 @@ index cbe97391..51c4e640 100644
  
  	tpl_printf(vars, TPLADD, "TMP", "STREAMCONFIGCLIENTSELECTED%d", cfg.stream_display_client);
  	tpl_addVar(vars, TPLADD, tpl_getVar(vars, "TMP"), "selected");
-@@ -2441,7 +2447,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -2444,7 +2450,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  		chk_reader("services", servicelabels, rdr);
  		chk_reader("lb_whitelist_services", servicelabelslb, rdr);
  
@@ -11813,7 +11813,7 @@ index cbe97391..51c4e640 100644
  		{
  			if(rdr)
  				{
-@@ -3215,6 +3221,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3218,6 +3224,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_printf(vars, TPLADD, "RESHARE",      "%d", cfg.cc_reshare);
  	tpl_printf(vars, TPLADD, "CCCRECONNECT", "%d", rdr->cc_reconnect);
  
@@ -11822,7 +11822,7 @@ index cbe97391..51c4e640 100644
  	if(rdr->cc_keepalive)
  		{ tpl_addVar(vars, TPLADD, "KEEPALIVECHECKED", "checked"); }
  #endif
-@@ -3252,6 +3260,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3255,6 +3263,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_addVar(vars, TPLADD, "USERSCRIPT", rdr->userscript);
  #endif
  
@@ -11846,7 +11846,7 @@ index cbe97391..51c4e640 100644
  	tpl_addVar(vars, TPLADD, "PROTOCOL", reader_get_type_desc(rdr, 0));
  
  	// Show only parameters which needed for the reader
-@@ -3273,6 +3298,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3276,6 +3301,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	case R_CAMD35 :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCAMD35BIT"));
  		break;
@@ -11856,7 +11856,7 @@ index cbe97391..51c4e640 100644
  	case R_CS378X :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCS378XBIT"));
  		break;
-@@ -5301,9 +5329,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
+@@ -5304,9 +5332,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
  
  					tpl_addVar(vars, TPLAPPEND, "LOGHISTORY", "<BR><BR>New Structure:<BR>");
  					char tbuffer[83];
@@ -11891,7 +11891,7 @@ index cbe97391..51c4e640 100644
  						localtime_r(&item->start, &start_t);
  						localtime_r(&item->end, &end_t);
  
-@@ -5797,6 +5850,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
+@@ -5800,6 +5853,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
  						filtered = (type == cl->typ) || (type == 'x' && (cl->typ == 'p' || cl->typ == 'r') && (cl->reader && cl->reader->cacheex.mode));
  #else
  						filtered = (type == cl->typ);
@@ -11901,7 +11901,7 @@ index cbe97391..51c4e640 100644
  #endif
  					}
  				}
-@@ -7370,6 +7426,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7373,6 +7429,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11911,7 +11911,7 @@ index cbe97391..51c4e640 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7842,7 +7901,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7845,7 +7904,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11924,7 +11924,7 @@ index cbe97391..51c4e640 100644
  		}
  
  		if(csystem)
-@@ -9011,7 +9074,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9014,7 +9077,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
