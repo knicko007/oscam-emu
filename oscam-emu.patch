@@ -1,5 +1,5 @@
-patch version: 2.25.10-11900-802 (3193acc3)
-patch date: 2025-10-19 01:23:32 UTC (+00:00)
+patch version: 2.25.10-11901-802 (349ee109)
+patch date: 2025-10-19 18:21:41 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4b08cfc0..98dccbbf 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 68aab036..07250eaf 100644
+index ee596651..68f7e970 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 68aab036..07250eaf 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.10-11900"
+ #define CS_VERSION				"2.25.10-11901"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -12158,7 +12158,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index 6324f106..ce511fcf 100644
+index f08eee75..fbea6f1e 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -41,6 +41,10 @@
@@ -12172,7 +12172,7 @@ index 6324f106..ce511fcf 100644
  #ifdef WITH_SSL
  #include <openssl/crypto.h>
  #include <openssl/ssl.h>
-@@ -460,6 +464,8 @@ static void write_versionfile(bool use_stdout)
+@@ -461,6 +465,8 @@ static void write_versionfile(bool use_stdout)
  #ifdef WITH_SIGNING
  	write_conf(WITH_SIGNING, "Binary signing support");
  #endif
@@ -12181,7 +12181,7 @@ index 6324f106..ce511fcf 100644
  
  	fprintf(fp, "\n");
  	write_conf(MODULE_CAMD33, "camd 3.3x");
-@@ -1676,6 +1682,9 @@ const struct s_cardreader *cardreaders[] =
+@@ -1677,6 +1683,9 @@ const struct s_cardreader *cardreaders[] =
  #ifdef CARDREADER_STINGER
  	&cardreader_stinger,
  #endif
@@ -12191,7 +12191,7 @@ index 6324f106..ce511fcf 100644
  
  	NULL
  };
-@@ -1857,6 +1866,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1858,6 +1867,9 @@ int32_t main(int32_t argc, char *argv[])
  
  	init_sidtab();
  	init_readerdb();
