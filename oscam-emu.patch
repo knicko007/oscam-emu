@@ -1,5 +1,5 @@
-patch version: 2.25.11-11906-802 (a93e1a0c)
-patch date: 2025-11-16 18:22:40 UTC (+00:00)
+patch version: 2.25.12-11907-802 (f0be715b)
+patch date: 2025-12-14 18:25:00 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4b08cfc0..98dccbbf 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 71ca43db..d411e0c8 100644
+index cb552727..42f914b8 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 71ca43db..d411e0c8 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.11-11906"
+ #define CS_VERSION				"2.25.12-11907"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -705,10 +705,10 @@ index 2adf4518..76f0a6ff 100644
  			ErrorCode = oscam_sttkd_KeyWrite(tkd_desc_info[demux[demux_id].dev_index].key_hndl, l, cw + (l * 8));
  
 diff --git a/module-dvbapi.c b/module-dvbapi.c
-index 6c762fac..7c85d4fe 100644
+index ca7b004b..11d371e8 100644
 --- a/module-dvbapi.c
 +++ b/module-dvbapi.c
-@@ -1883,7 +1883,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
+@@ -1884,7 +1884,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
  
  			if(match)
  			{
@@ -724,7 +724,7 @@ index 6c762fac..7c85d4fe 100644
  				if(csystem)
  				{
  					if(caid != ncaid)
-@@ -1904,7 +1911,15 @@ void dvbapi_start_emm_filter(int32_t demux_id)
+@@ -1905,7 +1912,15 @@ void dvbapi_start_emm_filter(int32_t demux_id)
  					}
  					else if(csystem->get_emm_filter)
  					{
@@ -741,7 +741,7 @@ index 6c762fac..7c85d4fe 100644
  					}
  				}
  				else
-@@ -2642,6 +2657,8 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
+@@ -2646,6 +2661,8 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
  	er->vpid   = demux[demux_id].ECMpids[pid].VPID;
  	er->pmtpid = demux[demux_id].pmtpid;
  	er->onid   = demux[demux_id].onid;
@@ -750,7 +750,7 @@ index 6c762fac..7c85d4fe 100644
  	er->msgid  = msgid;
  
  #ifdef WITH_STAPI5
-@@ -2673,6 +2690,63 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
+@@ -2677,6 +2694,63 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
  			match = 1; // so make it a match to try it!
  		}
  
@@ -814,7 +814,7 @@ index 6c762fac..7c85d4fe 100644
  		if(match) // if matching reader found check for irdeto cas if local irdeto card check if it received emms in last 60 minutes
  		{
  			if(caid_is_irdeto(er->caid)) // irdeto cas init irdeto_curindex to wait for first index (00)
-@@ -3782,7 +3856,7 @@ static void dvbapi_parse_pmt_ca_descriptor(int32_t demux_id, const uint8_t *buff
+@@ -3786,7 +3860,7 @@ static void dvbapi_parse_pmt_ca_descriptor(int32_t demux_id, const uint8_t *buff
  	ca_system_id = b2i(2, buffer);
  	ca_pid = b2i(2, buffer + 2) & 0x1FFF;
  
@@ -823,7 +823,7 @@ index 6c762fac..7c85d4fe 100644
  	{
  		return; // This is not a valid CAID or ECM pid
  	}
-@@ -4370,14 +4444,33 @@ static void dvbapi_capmt_notify(struct demux_s *dmx)
+@@ -4374,14 +4448,33 @@ static void dvbapi_capmt_notify(struct demux_s *dmx)
  
  static void dvbapi_prepare_descrambling(int32_t demux_id, uint32_t msgid)
  {
@@ -859,7 +859,7 @@ index 6c762fac..7c85d4fe 100644
  	{
  		dvbapi_start_pmt_filter(demux_id);
  	}
-@@ -5577,6 +5670,7 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5582,6 +5675,7 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  	if(filtertype == TYPE_ECM)
  	{
  		uint32_t chid = 0x10000;
@@ -867,7 +867,7 @@ index 6c762fac..7c85d4fe 100644
  		ECM_REQUEST *er;
  
  		if(len != 0) // len = 0 receiver encountered an internal bufferoverflow!
-@@ -5606,8 +5700,25 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5611,8 +5705,25 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  				return;
  			}
  
@@ -894,7 +894,7 @@ index 6c762fac..7c85d4fe 100644
  			{
  				if(!(er = get_ecmtask()))
  				{
-@@ -5951,6 +6062,35 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5956,6 +6067,35 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  			return; // just skip on internal buffer overflow
  		}
  
@@ -930,7 +930,7 @@ index 6c762fac..7c85d4fe 100644
  		// fix to handle more than one irdeto emm packet
  		uint8_t *pbuf = buffer;
  		int32_t done = 0;
-@@ -7169,8 +7309,10 @@ void dvbapi_write_cw(int32_t demux_id, int32_t pid, int32_t stream_id, uint8_t *
+@@ -7185,8 +7325,10 @@ void dvbapi_write_cw(int32_t demux_id, int32_t pid, int32_t stream_id, uint8_t *
  	for(n = 0; n < 2; n++)
  	{
  		// Check if cw has changed and if new cw is empty (all zeros)
@@ -942,7 +942,7 @@ index 6c762fac..7c85d4fe 100644
  		{
  			// prepare ca device
  			uint32_t idx = dvbapi_ca_set_pid(demux_id, pid, stream_id, (algo == CA_ALGO_DES), msgid);
-@@ -7481,7 +7623,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
+@@ -7487,7 +7629,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
  
  		// 0=matching ecm hash, 2=no filter, 3=table reset, 4=cache-ex response
  		// Check only against last_cw[0] (index 0) - No need to check the rest
@@ -953,7 +953,7 @@ index 6c762fac..7c85d4fe 100644
  		{
  			// check for matching control word
  			if(memcmp(er->cw, demux[i].last_cw[0][0], 8) == 0 &&
-@@ -8486,7 +8630,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
+@@ -8490,7 +8634,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
  	}
  
  	// Check for null cw
@@ -965,7 +965,7 @@ index 6c762fac..7c85d4fe 100644
  		return 5;
  	}
 diff --git a/module-dvbapi.h b/module-dvbapi.h
-index 12e9dab5..86eae695 100644
+index 4f49b261..f35daf21 100644
 --- a/module-dvbapi.h
 +++ b/module-dvbapi.h
 @@ -336,6 +336,9 @@ typedef struct filter_s
