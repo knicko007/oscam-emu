@@ -1,5 +1,5 @@
-patch version: 2.25.12-11907-802 (f0be715b)
-patch date: 2025-12-14 18:25:00 UTC (+00:00)
+patch version: 2.26.01-11910-802 (95526afd)
+patch date: 2026-01-04 23:29:52 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4b08cfc0..98dccbbf 100644
@@ -174,7 +174,7 @@ index 03c70f7d..9b99c3c4 100644
        readers: READER_NAGRA READER_NAGRA_MERLIN READER_IRDETO READER_CONAX READER_CRYPTOWORKS READER_SECA READER_VIACCESS READER_VIDEOGUARD READER_DRE READER_TONGFANG READER_BULCRYPT READER_GRIFFIN READER_DGCRYPT
   card_readers: CARDREADER_PHOENIX CARDREADER_INTERNAL CARDREADER_SC8IN1 CARDREADER_MP35 CARDREADER_SMARGO CARDREADER_DB2COM CARDREADER_STAPI CARDREADER_STAPI5 CARDREADER_STINGER CARDREADER_DRECAS
 diff --git a/README.md b/README.md
-index fea2de8c..23597add 100644
+index feeb2d32..5d514452 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,14 +1,18 @@
@@ -192,9 +192,9 @@ index fea2de8c..23597add 100644
  =======
  
 -OSCam: Open Source CAM
--Copyright (C) 2009-2025 OSCam developers
+-Copyright (C) 2009-2026 OSCam developers
 +OSCam-Emu: Open Source CAM with Emulator
-+Copyright (C) 2009-2025 OSCam-Emu developers
++Copyright (C) 2009-2026 OSCam-Emu developers
  
 -OSCam is based on the Streamboard mp-cardserver 0.9d by dukat and
 +OSCam-Emu is based on the Streamboard mp-cardserver 0.9d by dukat and
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index cb552727..42f914b8 100644
+index 9d90e5ec..6c555c9d 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index cb552727..42f914b8 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.25.12-11907"
+ #define CS_VERSION				"2.26.01-11910"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -503,7 +503,7 @@ index cb552727..42f914b8 100644
  #endif
  	uint8_t			cnxlastecm;						// == 0 - last ecm has not been paired ecm, > 0 last ecm has been paired ecm
  	LLIST			*emmstat;						// emm stats
-@@ -2468,6 +2486,10 @@ struct s_config
+@@ -2469,6 +2487,10 @@ struct s_config
  #else
  #define DEFAULT_STREAM_SOURCE_PORT 8001 //Enigma2
  #endif
@@ -514,7 +514,7 @@ index cb552727..42f914b8 100644
  #endif
  
  	int32_t			max_cache_time;					// seconds ecms are stored in ecmcwcache
-@@ -2653,12 +2675,18 @@ bool boxtype_is(const char *boxtype);
+@@ -2654,12 +2676,18 @@ bool boxtype_is(const char *boxtype);
  bool boxname_is(const char *boxname);
  const char *boxtype_get(void);
  const char *boxname_get(void);
@@ -533,8 +533,8 @@ index cb552727..42f914b8 100644
  static inline bool caid_is_betacrypt(uint16_t caid) { return caid >> 8 == 0x17; }
  static inline bool caid_is_nagra(uint16_t caid) { return caid >> 8 == 0x18; }
  static inline bool caid_is_bulcrypt(uint16_t caid) { return caid == 0x5581 || caid == 0x4AEE; }
-@@ -2666,4 +2694,8 @@ static inline bool caid_is_dre(uint16_t caid) { return caid == 0x4AE0 || caid ==
- static inline bool caid_is_tongfang(uint16_t caid) { return caid == 0x4A02; }
+@@ -2677,4 +2705,8 @@ static inline uint8_t get_ecm_mode(const ECM_REQUEST *er) {
+ #endif
  const char *get_cardsystem_desc_by_caid(uint16_t caid);
  
 +#ifdef WITH_EMU
@@ -705,7 +705,7 @@ index 2adf4518..76f0a6ff 100644
  			ErrorCode = oscam_sttkd_KeyWrite(tkd_desc_info[demux[demux_id].dev_index].key_hndl, l, cw + (l * 8));
  
 diff --git a/module-dvbapi.c b/module-dvbapi.c
-index ca7b004b..11d371e8 100644
+index d398452a..f9c05492 100644
 --- a/module-dvbapi.c
 +++ b/module-dvbapi.c
 @@ -1884,7 +1884,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
@@ -942,7 +942,7 @@ index ca7b004b..11d371e8 100644
  		{
  			// prepare ca device
  			uint32_t idx = dvbapi_ca_set_pid(demux_id, pid, stream_id, (algo == CA_ALGO_DES), msgid);
-@@ -7487,7 +7629,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
+@@ -7478,7 +7620,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
  
  		// 0=matching ecm hash, 2=no filter, 3=table reset, 4=cache-ex response
  		// Check only against last_cw[0] (index 0) - No need to check the rest
@@ -953,7 +953,7 @@ index ca7b004b..11d371e8 100644
  		{
  			// check for matching control word
  			if(memcmp(er->cw, demux[i].last_cw[0][0], 8) == 0 &&
-@@ -8490,7 +8634,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
+@@ -8481,7 +8625,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
  	}
  
  	// Check for null cw
@@ -10523,7 +10523,7 @@ index a0ce4ea8..5ca3aedd 100644
  				prv = ea;
  				continue; // proxy can convert or reject
 diff --git a/module-streamrelay.c b/module-streamrelay.c
-index 69f4cb60..68b23df7 100644
+index c1016272..92b6aa62 100644
 --- a/module-streamrelay.c
 +++ b/module-streamrelay.c
 @@ -15,6 +15,12 @@
@@ -10539,7 +10539,7 @@ index 69f4cb60..68b23df7 100644
  #define STREAM_UNDEFINED 0x00
  #define STREAM_VIDEO     0x01
  #define STREAM_AUDIO     0x02
-@@ -39,12 +45,27 @@ static pthread_mutex_t stream_server_mutex;
+@@ -42,12 +48,28 @@ static pthread_mutex_t stream_server_mutex;
  static int32_t glistenfd, mod_idx, gconncount = 0, gconnfd[STREAM_SERVER_MAX_CONNECTIONS], stream_resptime[STREAM_SERVER_MAX_CONNECTIONS];
  static char ecm_src[STREAM_SERVER_MAX_CONNECTIONS][9];
  static IN_ADDR_T client_ip[STREAM_SERVER_MAX_CONNECTIONS], stream_host_ip[STREAM_SERVER_MAX_CONNECTIONS];
@@ -10567,10 +10567,11 @@ index 69f4cb60..68b23df7 100644
 +emu_stream_client_key_data emu_fixed_key_data[EMU_STREAM_SERVER_MAX_CONNECTIONS];
 +LLIST *ll_emu_stream_delayed_keys[EMU_STREAM_SERVER_MAX_CONNECTIONS];
 +#endif
- 
- #ifdef MODULE_RADEGAST
- static int32_t gRadegastFd = 0;
-@@ -139,10 +160,13 @@ static void radegast_client_ecm(stream_client_data *cdata)
++
+ #if DVBCSA_KEY_ECM
+ static uint16_t last_srvid[STREAM_SERVER_MAX_CONNECTIONS];
+ #endif
+@@ -145,10 +167,13 @@ static void radegast_client_ecm(stream_client_data *cdata)
  		}
  	}
  }
@@ -10584,7 +10585,7 @@ index 69f4cb60..68b23df7 100644
  	uint16_t section_length = SCT_LEN(data);
  
  	if (section_length < 11)
-@@ -150,10 +174,36 @@ void ParseEcmData(stream_client_data *cdata)
+@@ -156,10 +181,36 @@ void ParseEcmData(stream_client_data *cdata)
  		return;
  	}
  
@@ -10624,7 +10625,7 @@ index 69f4cb60..68b23df7 100644
  
  static void write_cw(ECM_REQUEST *er, int32_t connid)
  {
-@@ -164,7 +214,11 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
+@@ -172,7 +223,11 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
  	{
  		if (has_dvbcsa_ecm)
  		{
@@ -10636,7 +10637,7 @@ index 69f4cb60..68b23df7 100644
  		}
  	}
  
-@@ -172,9 +226,18 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
+@@ -180,7 +235,11 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
  	{
  		if (has_dvbcsa_ecm)
  		{
@@ -10647,6 +10648,11 @@ index 69f4cb60..68b23df7 100644
 +#endif
  		}
  	}
+ #if DVBCSA_KEY_ECM
+@@ -194,6 +253,11 @@ static void write_cw(ECM_REQUEST *er, int32_t connid)
+ 		last_srvid[connid] = er->srvid;
+ 	}
+ #endif
 +#ifdef WITH_EMU
 +	SAFE_MUTEX_LOCK(&emu_fixed_key_data_mutex[connid]);
 +	emu_fixed_key_data[connid].csa_used = 1;
@@ -10655,7 +10661,7 @@ index 69f4cb60..68b23df7 100644
  }
  
  static void update_client_info(ECM_REQUEST *er, int32_t connid)
-@@ -205,24 +268,20 @@ static void update_client_info(ECM_REQUEST *er, int32_t connid)
+@@ -224,24 +288,20 @@ static void update_client_info(ECM_REQUEST *er, int32_t connid)
  bool stream_write_cw(ECM_REQUEST *er)
  {
  	int32_t i;
@@ -10690,7 +10696,7 @@ index 69f4cb60..68b23df7 100644
  }
  
  static void SearchTsPackets(const uint8_t *buf, const uint32_t bufLength, uint16_t *packetSize, uint16_t *startOffset)
-@@ -370,6 +429,9 @@ static void ParsePatData(stream_client_data *cdata)
+@@ -389,6 +449,9 @@ static void ParsePatData(stream_client_data *cdata)
  {
  	int32_t i;
  	uint16_t srvid;
@@ -10700,7 +10706,7 @@ index 69f4cb60..68b23df7 100644
  	for (i = 8; i + 7 < SCT_LEN(cdata->pat_data); i += 4)
  	{
  		srvid = b2i(2, cdata->pat_data + i);
-@@ -388,6 +450,21 @@ static void ParsePatData(stream_client_data *cdata)
+@@ -407,6 +470,21 @@ static void ParsePatData(stream_client_data *cdata)
  	}
  }
  
@@ -10722,7 +10728,7 @@ index 69f4cb60..68b23df7 100644
  static void ParseDescriptors(const uint8_t *buffer, const uint16_t info_length, uint8_t *type)
  {
  	uint32_t i;
-@@ -563,6 +640,9 @@ static void ParsePmtData(stream_client_data *cdata)
+@@ -587,6 +665,9 @@ static void ParsePmtData(stream_client_data *cdata)
  			case 0xD1:
  			case 0xEA:
  			{
@@ -10732,7 +10738,7 @@ index 69f4cb60..68b23df7 100644
  				cs_log_dbg(D_READER, "Stream client %i found video pid: 0x%04X (%i)",
  							cdata->connid, elementary_pid, elementary_pid);
  				stream_parse_pmt_ca_descriptor(cdata->pmt_data, i, 5, es_info_length, cdata);
-@@ -577,6 +657,15 @@ static void ParsePmtData(stream_client_data *cdata)
+@@ -601,6 +682,15 @@ static void ParsePmtData(stream_client_data *cdata)
  			case 0x2E:
  			case 0x81:
  			{
@@ -10748,7 +10754,7 @@ index 69f4cb60..68b23df7 100644
  				cs_log_dbg(D_READER, "Stream client %i found audio pid: 0x%04X (%i)",
  							cdata->connid, elementary_pid, elementary_pid);
  				break;
-@@ -589,19 +678,87 @@ static void ParsePmtData(stream_client_data *cdata)
+@@ -613,20 +703,88 @@ static void ParsePmtData(stream_client_data *cdata)
  				ParseDescriptors(cdata->pmt_data + i + 5, es_info_length, &type);
  				if (type == STREAM_AUDIO)
  				{
@@ -10787,10 +10793,10 @@ index 69f4cb60..68b23df7 100644
 +	{
 +		cs_log_dbg(D_READER, "Stream client %i found fake caid: 0x%04X (%i)",
 +					cdata->connid, cdata->caid, cdata->caid);
-+	}
+ 	}
 +#endif
-+}
-+
+ }
+ 
 +#ifdef WITH_EMU
 +static void ParseCatData(stream_client_data *cdata)
 +{
@@ -10830,13 +10836,14 @@ index 69f4cb60..68b23df7 100644
 +	{
 +		//refresh_entitlements(rdr);
 +		cs_log("Stream client %i found %i keys", cdata->connid, keysAdded);
- 	}
- }
++	}
++}
 +#endif
- 
++
  static void ParseTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32_t bufLength, uint16_t packetSize)
  {
-@@ -651,7 +808,11 @@ static void ParseTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32
+ 	uint8_t payloadStart;
+@@ -675,7 +833,11 @@ static void ParseTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32
  	}
  }
  
@@ -10849,7 +10856,7 @@ index 69f4cb60..68b23df7 100644
  {
  	if (fill[oddeven] > 0)
  	{
-@@ -669,10 +830,531 @@ static void decrypt(struct dvbcsa_bs_batch_s *tsbbatch, uint16_t fill[2], const
+@@ -693,10 +855,531 @@ static void decrypt(struct dvbcsa_bs_batch_s *tsbbatch, uint16_t fill[2], const
  
  		fill[oddeven] = 0;
  
@@ -10858,9 +10865,8 @@ index 69f4cb60..68b23df7 100644
 +#else
  		dvbcsa_bs_decrypt(key_data[connid].key[oddeven], tsbbatch, 184);
 +#endif
- 	}
- }
--#define decrypt(a) decrypt(tsbbatch, fill, a, data->connid)
++	}
++}
 +#ifndef WITH_EMU
 +#define decrypt(a) decrypt_csa(tsbbatch, fill, a, data->connid)
 +#else // multiple cw
@@ -11002,9 +11008,10 @@ index 69f4cb60..68b23df7 100644
 +
 +			stream_buf[i + 3] &= 0x3F;
 +		}
-+	}
+ 	}
 +	if (data->key.csa_used) { decrypt_pvu(oddeven, cw_type); }
-+}
+ }
+-#define decrypt(a) decrypt(tsbbatch, fill, a, data->connid)
 +static void DescrambleTsPacketsRosscrypt1(emu_stream_client_data *data, uint8_t *stream_buf, uint32_t bufLength, uint16_t packetSize)
 +{
 +	int8_t is_av_pid;
@@ -11382,7 +11389,7 @@ index 69f4cb60..68b23df7 100644
  
  static void DescrambleTsPackets(stream_client_data *data, uint8_t *stream_buf, uint32_t bufLength, uint16_t packetSize, struct dvbcsa_bs_batch_s *tsbbatch)
  {
-@@ -697,6 +1379,31 @@ static void DescrambleTsPackets(stream_client_data *data, uint8_t *stream_buf, u
+@@ -721,6 +1404,31 @@ static void DescrambleTsPackets(stream_client_data *data, uint8_t *stream_buf, u
  			continue;
  		}
  #ifdef MODULE_RADEGAST
@@ -11414,17 +11421,17 @@ index 69f4cb60..68b23df7 100644
  		if (data->ecm_pid && pid == data->ecm_pid) // Process the ECM data
  		{
  			// set to null pid
-@@ -788,6 +1495,9 @@ static void stream_client_disconnect(stream_client_conn_data *conndata)
- 
- 	SAFE_MUTEX_LOCK(&fixed_key_srvid_mutex);
+@@ -814,6 +1522,9 @@ static void stream_client_disconnect(stream_client_conn_data *conndata)
  	stream_cur_srvid[conndata->connid] = NO_SRVID_VALUE;
+ #if DVBCSA_KEY_ECM
+ 	last_srvid[conndata->connid] = NO_SRVID_VALUE;
++#endif
 +#ifdef WITH_EMU
 +	stream_server_has_ecm[conndata->connid] = 0;
-+#endif
+ #endif
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
- 	SAFE_MUTEX_LOCK(&stream_server_mutex);
-@@ -882,10 +1592,12 @@ static void *stream_client_handler(void *arg)
+@@ -909,10 +1620,12 @@ static void *stream_client_handler(void *arg)
  	uint8_t descrambling = 0;
  
  	struct timeb start, end;
@@ -11439,7 +11446,7 @@ index 69f4cb60..68b23df7 100644
  	struct dvbcsa_bs_batch_s *tsbbatch;
  
  	create_streamrelay_client(conndata);
-@@ -996,8 +1708,16 @@ static void *stream_client_handler(void *arg)
+@@ -1023,8 +1736,16 @@ static void *stream_client_handler(void *arg)
  		return NULL;
  	}
  
@@ -11456,7 +11463,7 @@ index 69f4cb60..68b23df7 100644
  
  	if (!cs_malloc(&tsbbatch, (cluster_size + 1) * sizeof(struct dvbcsa_bs_batch_s)))
  	{
-@@ -1010,6 +1730,9 @@ static void *stream_client_handler(void *arg)
+@@ -1037,6 +1758,9 @@ static void *stream_client_handler(void *arg)
  
  	SAFE_MUTEX_LOCK(&fixed_key_srvid_mutex);
  	stream_cur_srvid[conndata->connid] = data->srvid;
@@ -11466,7 +11473,7 @@ index 69f4cb60..68b23df7 100644
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
  	cs_log("Stream client %i request. host=%s port=%d path=%s (%s)", conndata->connid, conndata->stream_host, cfg.stream_source_port, stream_path, !cfg.stream_client_source_host ? "config" : strchr(http_host,':') ? "http header" : "client ip");
-@@ -1032,6 +1755,9 @@ static void *stream_client_handler(void *arg)
+@@ -1060,6 +1784,9 @@ static void *stream_client_handler(void *arg)
  	data->have_cat_data = 0;
  	data->have_ecm_data = 0;
  	data->have_emm_data = 0;
@@ -11476,7 +11483,7 @@ index 69f4cb60..68b23df7 100644
  
  	while (!exit_oscam && clientStatus != -1 && streamConnectErrorCount < 3
  			&& streamDataErrorCount < 15)
-@@ -1053,6 +1779,18 @@ static void *stream_client_handler(void *arg)
+@@ -1081,6 +1808,18 @@ static void *stream_client_handler(void *arg)
  				&& (streamConnectErrorCount < 3 || streamDataErrorCount < 15))
  #endif
  		{
@@ -11495,12 +11502,12 @@ index 69f4cb60..68b23df7 100644
  			if(!streamrelay_client[conndata->connid] || streamrelay_client[conndata->connid]->kill)
  			{
  				clientStatus = -1;
-@@ -1155,13 +1893,30 @@ static void *stream_client_handler(void *arg)
- 					// We have both PAT and PMT data - We can start descrambling
- 					if (data->have_pat_data == 1 && data->have_pmt_data == 1)
- 					{
--						if (chk_ctab_ex(data->caid, &cfg.stream_relay_ctab) && (data->caid != 0xA101 || data->caid == NO_CAID_VALUE))
-+						if (chk_ctab_ex(data->caid, &cfg.stream_relay_ctab))
+@@ -1191,13 +1930,30 @@ static void *stream_client_handler(void *arg)
+ 							stream_client_disconnect(conndata);
+ 							return NULL;
+ 						}
+-						if ((cfg.stream_relay_ctab.ctnum == 0 || chk_ctab_ex(data->caid, &cfg.stream_relay_ctab)) && data->caid != 0xA101 && data->caid != NO_CAID_VALUE)
++						if (cfg.stream_relay_ctab.ctnum == 0 || chk_ctab_ex(data->caid, &cfg.stream_relay_ctab))
  						{
 +#ifdef WITH_EMU
 +							if (caid_is_powervu(data->caid))
@@ -11525,9 +11532,9 @@ index 69f4cb60..68b23df7 100644
  								}
 +							}
  						}
- 						else
- 						{
-@@ -1201,9 +1956,16 @@ static void *stream_client_handler(void *arg)
+ 					}
+ 					else // Search PAT and PMT packets for service information
+@@ -1232,9 +1988,16 @@ static void *stream_client_handler(void *arg)
  
  	NULLFREE(http_buf);
  	NULLFREE(stream_buf);
@@ -11545,15 +11552,7 @@ index 69f4cb60..68b23df7 100644
  	NULLFREE(tsbbatch);
  
  	NULLFREE(data);
-@@ -1231,6 +1993,7 @@ static void *stream_server(void)
- 
- 	cluster_size = dvbcsa_bs_batch_size();
- 	has_dvbcsa_ecm = (DVBCSA_HEADER_ECM);
-+
- #if !DVBCSA_KEY_ECM
- #pragma message "WARNING: Streamrelay is compiled without dvbcsa ecm headers! ECM processing via Streamrelay will not work!"
- #endif
-@@ -1258,6 +2021,9 @@ static void *stream_server(void)
+@@ -1292,6 +2055,9 @@ static void *stream_server(void)
  	for (i = 0; i < STREAM_SERVER_MAX_CONNECTIONS; i++)
  	{
  		stream_cur_srvid[i] = NO_SRVID_VALUE;
@@ -11563,7 +11562,7 @@ index 69f4cb60..68b23df7 100644
  	}
  	SAFE_MUTEX_UNLOCK(&fixed_key_srvid_mutex);
  
-@@ -1383,12 +2149,88 @@ void *streamrelay_handler(struct s_client *UNUSED(cl), uint8_t *UNUSED(mbuf), in
+@@ -1417,12 +2183,88 @@ void *streamrelay_handler(struct s_client *UNUSED(cl), uint8_t *UNUSED(mbuf), in
  			snprintf(authtmp, sizeof(authtmp), "%s:%s", cfg.stream_source_auth_user, cfg.stream_source_auth_password);
  			b64encode(authtmp, cs_strlen(authtmp), &stream_source_auth);
  		}
@@ -11653,7 +11652,7 @@ index 69f4cb60..68b23df7 100644
  {
  	int32_t i;
 diff --git a/module-streamrelay.h b/module-streamrelay.h
-index 4425e020..42ec2351 100644
+index f43ff557..2f0e1b16 100644
 --- a/module-streamrelay.h
 +++ b/module-streamrelay.h
 @@ -10,26 +10,47 @@
@@ -11713,7 +11712,7 @@ index 4425e020..42ec2351 100644
  typedef struct
  {
  	int32_t connid;
-@@ -57,7 +78,20 @@ typedef struct
+@@ -58,7 +79,20 @@ typedef struct
  	uint16_t ecm_pid;
  	uint16_t emm_pid;
  	uint16_t pcr_pid;
@@ -11734,7 +11733,7 @@ index 4425e020..42ec2351 100644
  } stream_client_data;
  
  void init_stream_server(void);
-@@ -65,6 +99,30 @@ void stop_stream_server(void);
+@@ -66,6 +100,30 @@ void stop_stream_server(void);
  
  bool stream_write_cw(ECM_REQUEST *er);
  
@@ -11778,7 +11777,7 @@ index 29b93646..66ce02a9 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 391e8987..7ac62407 100644
+index 36a0e443..e4755092 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
@@ -11804,7 +11803,7 @@ index 391e8987..7ac62407 100644
  
  	tpl_printf(vars, TPLADD, "TMP", "STREAMCONFIGCLIENTSELECTED%d", cfg.stream_display_client);
  	tpl_addVar(vars, TPLADD, tpl_getVar(vars, "TMP"), "selected");
-@@ -2444,7 +2450,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -2447,7 +2453,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  		chk_reader("services", servicelabels, rdr);
  		chk_reader("lb_whitelist_services", servicelabelslb, rdr);
  
@@ -11813,7 +11812,7 @@ index 391e8987..7ac62407 100644
  		{
  			if(rdr)
  				{
-@@ -3217,6 +3223,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3220,6 +3226,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_printf(vars, TPLADD, "RESHARE",      "%d", cfg.cc_reshare);
  	tpl_printf(vars, TPLADD, "CCCRECONNECT", "%d", rdr->cc_reconnect);
  
@@ -11822,7 +11821,7 @@ index 391e8987..7ac62407 100644
  	if(rdr->cc_keepalive)
  		{ tpl_addVar(vars, TPLADD, "KEEPALIVECHECKED", "checked"); }
  #endif
-@@ -3254,6 +3262,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3257,6 +3265,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_addVar(vars, TPLADD, "USERSCRIPT", rdr->userscript);
  #endif
  
@@ -11846,7 +11845,7 @@ index 391e8987..7ac62407 100644
  	tpl_addVar(vars, TPLADD, "PROTOCOL", reader_get_type_desc(rdr, 0));
  
  	// Show only parameters which needed for the reader
-@@ -3275,6 +3300,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3278,6 +3303,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	case R_CAMD35 :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCAMD35BIT"));
  		break;
@@ -11856,7 +11855,7 @@ index 391e8987..7ac62407 100644
  	case R_CS378X :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCS378XBIT"));
  		break;
-@@ -5303,9 +5331,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
+@@ -5306,9 +5334,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
  
  					tpl_addVar(vars, TPLAPPEND, "LOGHISTORY", "<BR><BR>New Structure:<BR>");
  					char tbuffer[83];
@@ -11891,7 +11890,7 @@ index 391e8987..7ac62407 100644
  						localtime_r(&item->start, &start_t);
  						localtime_r(&item->end, &end_t);
  
-@@ -5799,6 +5852,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
+@@ -5802,6 +5855,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
  						filtered = (type == cl->typ) || (type == 'x' && (cl->typ == 'p' || cl->typ == 'r') && (cl->reader && cl->reader->cacheex.mode));
  #else
  						filtered = (type == cl->typ);
@@ -11901,7 +11900,7 @@ index 391e8987..7ac62407 100644
  #endif
  					}
  				}
-@@ -7372,6 +7428,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7375,6 +7431,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11911,7 +11910,7 @@ index 391e8987..7ac62407 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7844,7 +7903,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7847,7 +7906,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11924,7 +11923,7 @@ index 391e8987..7ac62407 100644
  		}
  
  		if(csystem)
-@@ -9013,7 +9076,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9016,7 +9079,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
@@ -11977,7 +11976,7 @@ index 624d1d3f..1b54442a 100644
  		return 1; // reader caid is not real caid
  	}
 diff --git a/oscam-config-global.c b/oscam-config-global.c
-index 508d8e58..a946e2a9 100644
+index c6dd01c7..9044e568 100644
 --- a/oscam-config-global.c
 +++ b/oscam-config-global.c
 @@ -940,6 +940,10 @@ static const struct config_list streamrelay_opts[] =
@@ -12158,7 +12157,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index b9944385..fba7ba41 100644
+index a98198da..3262577e 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -41,6 +41,10 @@
@@ -12172,7 +12171,7 @@ index b9944385..fba7ba41 100644
  #ifdef WITH_SSL
  #include <openssl/crypto.h>
  #include <openssl/ssl.h>
-@@ -461,6 +465,8 @@ static void write_versionfile(bool use_stdout)
+@@ -458,6 +462,8 @@ static void write_versionfile(bool use_stdout)
  #ifdef WITH_SIGNING
  	write_conf(WITH_SIGNING, "Binary signing support");
  #endif
@@ -12181,7 +12180,7 @@ index b9944385..fba7ba41 100644
  
  	fprintf(fp, "\n");
  	write_conf(MODULE_CAMD33, "camd 3.3x");
-@@ -1677,6 +1683,9 @@ const struct s_cardreader *cardreaders[] =
+@@ -1674,6 +1680,9 @@ const struct s_cardreader *cardreaders[] =
  #ifdef CARDREADER_STINGER
  	&cardreader_stinger,
  #endif
@@ -12191,7 +12190,7 @@ index b9944385..fba7ba41 100644
  
  	NULL
  };
-@@ -1858,6 +1867,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1855,6 +1864,9 @@ int32_t main(int32_t argc, char *argv[])
  
  	init_sidtab();
  	init_readerdb();
