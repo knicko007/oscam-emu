@@ -1,5 +1,5 @@
-patch version: 2.26.01-11911-802 (d9c77bbe)
-patch date: 2026-01-05 01:43:00 UTC (+00:00)
+patch version: 2.26.01-11914-802 (c749c6e7)
+patch date: 2026-01-05 18:29:25 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 879c990b..b39bc25a 100644
@@ -426,7 +426,7 @@ index 8b6c309a..35f38c6c 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 460f7e00..67321f68 100644
+index 3062317f..9835ffec 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -439,7 +439,7 @@ index 460f7e00..67321f68 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.01-11911"
+ #define CS_VERSION				"2.26.01-11914"
  #endif
 @@ -406,14 +406,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -705,10 +705,10 @@ index 2adf4518..76f0a6ff 100644
  			ErrorCode = oscam_sttkd_KeyWrite(tkd_desc_info[demux[demux_id].dev_index].key_hndl, l, cw + (l * 8));
  
 diff --git a/module-dvbapi.c b/module-dvbapi.c
-index d398452a..f9c05492 100644
+index 7fa6edd7..e349e52d 100644
 --- a/module-dvbapi.c
 +++ b/module-dvbapi.c
-@@ -1884,7 +1884,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
+@@ -1887,7 +1887,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
  
  			if(match)
  			{
@@ -724,7 +724,7 @@ index d398452a..f9c05492 100644
  				if(csystem)
  				{
  					if(caid != ncaid)
-@@ -1905,7 +1912,15 @@ void dvbapi_start_emm_filter(int32_t demux_id)
+@@ -1908,7 +1915,15 @@ void dvbapi_start_emm_filter(int32_t demux_id)
  					}
  					else if(csystem->get_emm_filter)
  					{
@@ -741,7 +741,7 @@ index d398452a..f9c05492 100644
  					}
  				}
  				else
-@@ -2646,6 +2661,8 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
+@@ -2651,6 +2666,8 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
  	er->vpid   = demux[demux_id].ECMpids[pid].VPID;
  	er->pmtpid = demux[demux_id].pmtpid;
  	er->onid   = demux[demux_id].onid;
@@ -750,7 +750,7 @@ index d398452a..f9c05492 100644
  	er->msgid  = msgid;
  
  #ifdef WITH_STAPI5
-@@ -2677,6 +2694,63 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
+@@ -2682,6 +2699,63 @@ int32_t dvbapi_start_descrambling(int32_t demux_id, int32_t pid, int8_t checked,
  			match = 1; // so make it a match to try it!
  		}
  
@@ -814,7 +814,7 @@ index d398452a..f9c05492 100644
  		if(match) // if matching reader found check for irdeto cas if local irdeto card check if it received emms in last 60 minutes
  		{
  			if(caid_is_irdeto(er->caid)) // irdeto cas init irdeto_curindex to wait for first index (00)
-@@ -3786,7 +3860,7 @@ static void dvbapi_parse_pmt_ca_descriptor(int32_t demux_id, const uint8_t *buff
+@@ -3791,7 +3865,7 @@ static void dvbapi_parse_pmt_ca_descriptor(int32_t demux_id, const uint8_t *buff
  	ca_system_id = b2i(2, buffer);
  	ca_pid = b2i(2, buffer + 2) & 0x1FFF;
  
@@ -823,7 +823,7 @@ index d398452a..f9c05492 100644
  	{
  		return; // This is not a valid CAID or ECM pid
  	}
-@@ -4374,14 +4448,33 @@ static void dvbapi_capmt_notify(struct demux_s *dmx)
+@@ -4379,14 +4453,33 @@ static void dvbapi_capmt_notify(struct demux_s *dmx)
  
  static void dvbapi_prepare_descrambling(int32_t demux_id, uint32_t msgid)
  {
@@ -859,7 +859,7 @@ index d398452a..f9c05492 100644
  	{
  		dvbapi_start_pmt_filter(demux_id);
  	}
-@@ -5582,6 +5675,7 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5587,6 +5680,7 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  	if(filtertype == TYPE_ECM)
  	{
  		uint32_t chid = 0x10000;
@@ -867,7 +867,7 @@ index d398452a..f9c05492 100644
  		ECM_REQUEST *er;
  
  		if(len != 0) // len = 0 receiver encountered an internal bufferoverflow!
-@@ -5611,8 +5705,25 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5616,8 +5710,25 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  				return;
  			}
  
@@ -894,7 +894,7 @@ index d398452a..f9c05492 100644
  			{
  				if(!(er = get_ecmtask()))
  				{
-@@ -5956,6 +6067,35 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5961,6 +6072,35 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  			return; // just skip on internal buffer overflow
  		}
  
@@ -930,7 +930,7 @@ index d398452a..f9c05492 100644
  		// fix to handle more than one irdeto emm packet
  		uint8_t *pbuf = buffer;
  		int32_t done = 0;
-@@ -7185,8 +7325,10 @@ void dvbapi_write_cw(int32_t demux_id, int32_t pid, int32_t stream_id, uint8_t *
+@@ -7190,8 +7330,10 @@ void dvbapi_write_cw(int32_t demux_id, int32_t pid, int32_t stream_id, uint8_t *
  	for(n = 0; n < 2; n++)
  	{
  		// Check if cw has changed and if new cw is empty (all zeros)
@@ -942,7 +942,7 @@ index d398452a..f9c05492 100644
  		{
  			// prepare ca device
  			uint32_t idx = dvbapi_ca_set_pid(demux_id, pid, stream_id, (algo == CA_ALGO_DES), msgid);
-@@ -7478,7 +7620,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
+@@ -7483,7 +7625,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
  
  		// 0=matching ecm hash, 2=no filter, 3=table reset, 4=cache-ex response
  		// Check only against last_cw[0] (index 0) - No need to check the rest
@@ -953,7 +953,7 @@ index d398452a..f9c05492 100644
  		{
  			// check for matching control word
  			if(memcmp(er->cw, demux[i].last_cw[0][0], 8) == 0 &&
-@@ -8481,7 +8625,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
+@@ -8486,7 +8630,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
  	}
  
  	// Check for null cw
@@ -11777,7 +11777,7 @@ index 29b93646..66ce02a9 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 36a0e443..e4755092 100644
+index aeae6e85..2a2965ce 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
@@ -11855,7 +11855,7 @@ index 36a0e443..e4755092 100644
  	case R_CS378X :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCS378XBIT"));
  		break;
-@@ -5306,9 +5334,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
+@@ -5311,9 +5339,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
  
  					tpl_addVar(vars, TPLAPPEND, "LOGHISTORY", "<BR><BR>New Structure:<BR>");
  					char tbuffer[83];
@@ -11890,7 +11890,7 @@ index 36a0e443..e4755092 100644
  						localtime_r(&item->start, &start_t);
  						localtime_r(&item->end, &end_t);
  
-@@ -5802,6 +5855,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
+@@ -5807,6 +5860,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
  						filtered = (type == cl->typ) || (type == 'x' && (cl->typ == 'p' || cl->typ == 'r') && (cl->reader && cl->reader->cacheex.mode));
  #else
  						filtered = (type == cl->typ);
@@ -11900,7 +11900,7 @@ index 36a0e443..e4755092 100644
  #endif
  					}
  				}
-@@ -7375,6 +7431,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7391,6 +7447,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11910,7 +11910,7 @@ index 36a0e443..e4755092 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7847,7 +7906,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7863,7 +7922,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11923,7 +11923,7 @@ index 36a0e443..e4755092 100644
  		}
  
  		if(csystem)
-@@ -9016,7 +9079,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9047,7 +9110,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
