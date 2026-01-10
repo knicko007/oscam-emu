@@ -1,5 +1,5 @@
-patch version: 2.26.01-11920-802 (53e664fa)
-patch date: 2026-01-09 12:40:03 UTC (+00:00)
+patch version: 2.26.01-11921-802 (71dd9898)
+patch date: 2026-01-10 01:23:50 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index ebcf9009..0b6e1831 100644
@@ -466,7 +466,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 2588b38c..8610330a 100644
+index 619e0362..bb37d62d 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -479,7 +479,7 @@ index 2588b38c..8610330a 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.01-11920"
+ #define CS_VERSION				"2.26.01-11921"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -11791,7 +11791,7 @@ index 7ca98749..d5019205 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 5a25b59f..8a56fd27 100644
+index 3494942a..f9eae60f 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
@@ -11914,7 +11914,7 @@ index 5a25b59f..8a56fd27 100644
  #endif
  					}
  				}
-@@ -7390,6 +7446,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7391,6 +7447,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11924,7 +11924,7 @@ index 5a25b59f..8a56fd27 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7862,7 +7921,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7863,7 +7922,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11937,7 +11937,7 @@ index 5a25b59f..8a56fd27 100644
  		}
  
  		if(csystem)
-@@ -9049,7 +9112,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9050,7 +9113,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
