@@ -1,5 +1,5 @@
 patch version: 2.26.01-11923-802 (e29c6da9)
-patch date: 2026-01-12 12:42:06 UTC (+00:00)
+patch date: 2026-01-12 13:26:57 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index ebcf9009..0b6e1831 100644
@@ -10487,6 +10487,20 @@ index 00000000..865e6687
 +}
 +
 +#endif // WITH_EMU
+diff --git a/module-newcamd-des.h b/module-newcamd-des.h
+index 7b048140..29f96e4e 100644
+--- a/module-newcamd-des.h
++++ b/module-newcamd-des.h
+@@ -6,6 +6,9 @@
+ #define DES_RIGHT 4
+ #define DES_HASH  8
+ 
++#define DES_ECM_CRYPT    0
++#define DES_ECM_HASH     DES_HASH
++
+ void nc_des(uint8_t key[], uint8_t mode, uint8_t data[]);
+ int nc_des_encrypt(uint8_t *buffer, int len, uint8_t *deskey);
+ int nc_des_decrypt(uint8_t *buffer, int len, uint8_t *deskey);
 diff --git a/module-newcamd.c b/module-newcamd.c
 index fc3f83cf..7c23924c 100644
 --- a/module-newcamd.c
