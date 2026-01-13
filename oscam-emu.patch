@@ -1,8 +1,8 @@
-patch version: 2.26.01-11924-802 (ea61ff66)
-patch date: 2026-01-13 12:41:48 UTC (+00:00)
+patch version: 2.26.01-11927-802 (848f5460)
+patch date: 2026-01-13 18:28:43 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 78d1699c..500c00b1 100644
+index 5a9c976d..20ecad4e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -539,6 +539,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
@@ -28,7 +28,7 @@ index 78d1699c..500c00b1 100644
  execute_process (COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/config.sh --show-valid OUTPUT_VARIABLE config_vars_string OUTPUT_STRIP_TRAILING_WHITESPACE)
  string(REGEX MATCHALL "[A-Z0-9_]+" config_vars ${config_vars_string})
  
-@@ -884,6 +900,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
+@@ -874,6 +890,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
  
  #--------------------------------------------------------------------------------
  
@@ -53,7 +53,7 @@ index 78d1699c..500c00b1 100644
  #----------------------- installation -----------------------------
  
  file (GLOB config_files "${CMAKE_CURRENT_SOURCE_DIR}/Distribution/oscam.*")
-@@ -996,4 +1030,11 @@ if (HAVE_LIBDVBCSA)
+@@ -986,4 +1020,11 @@ if (HAVE_LIBDVBCSA)
  	endif(STATICLIBDVBCSA AND NOT LIBDVBCSADIR)
  endif (HAVE_LIBDVBCSA)
  
@@ -114,7 +114,7 @@ index 3d333a93..08b173ed 100644
  	  1 = send keepalive messages to keep connection to remote CCCam server up, default:0
  
 diff --git a/Makefile b/Makefile
-index 39b8dfa0..b8ad1c5d 100644
+index ea47c289..6827645e 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -32,6 +32,9 @@ ifeq "$(shell ./config.sh --enabled WITH_SSL)" "Y"
@@ -127,7 +127,7 @@ index 39b8dfa0..b8ad1c5d 100644
  ifdef USE_SSL
  	override USE_LIBCRYPTO=1
  endif
-@@ -376,6 +379,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
+@@ -370,6 +373,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
  SRC-$(CONFIG_MODULE_CCCAM) += module-cccam.c
  SRC-$(CONFIG_MODULE_CCCSHARE) += module-cccshare.c
  SRC-$(CONFIG_MODULE_CONSTCW) += module-constcw.c
@@ -466,7 +466,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 29276af9..d63a4471 100644
+index 60f67045..9026fc23 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -479,7 +479,7 @@ index 29276af9..d63a4471 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.01-11924"
+ #define CS_VERSION				"2.26.01-11927"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -719,7 +719,7 @@ index 2adf4518..76f0a6ff 100644
  			ErrorCode = oscam_sttkd_KeyWrite(tkd_desc_info[demux[demux_id].dev_index].key_hndl, l, cw + (l * 8));
  
 diff --git a/module-dvbapi.c b/module-dvbapi.c
-index 7fa6edd7..e349e52d 100644
+index 420a7ff8..f02f3235 100644
 --- a/module-dvbapi.c
 +++ b/module-dvbapi.c
 @@ -1887,7 +1887,14 @@ void dvbapi_start_emm_filter(int32_t demux_id)
@@ -874,14 +874,14 @@ index 7fa6edd7..e349e52d 100644
  		dvbapi_start_pmt_filter(demux_id);
  	}
 @@ -5587,6 +5680,7 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
- 	if(filtertype == TYPE_ECM)
+ 	if(filtertype == TYPE_ECM && curpid)
  	{
  		uint32_t chid = 0x10000;
 +		int8_t pvu_skip = 0;
  		ECM_REQUEST *er;
  
  		if(len != 0) // len = 0 receiver encountered an internal bufferoverflow!
-@@ -5616,8 +5710,25 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5612,8 +5706,25 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  				return;
  			}
  
@@ -908,7 +908,7 @@ index 7fa6edd7..e349e52d 100644
  			{
  				if(!(er = get_ecmtask()))
  				{
-@@ -5961,6 +6072,35 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
+@@ -5957,6 +6068,35 @@ void dvbapi_process_input(int32_t demux_id, int32_t filter_num, uint8_t *buffer,
  			return; // just skip on internal buffer overflow
  		}
  
@@ -944,7 +944,7 @@ index 7fa6edd7..e349e52d 100644
  		// fix to handle more than one irdeto emm packet
  		uint8_t *pbuf = buffer;
  		int32_t done = 0;
-@@ -7190,8 +7330,10 @@ void dvbapi_write_cw(int32_t demux_id, int32_t pid, int32_t stream_id, uint8_t *
+@@ -7186,8 +7326,10 @@ void dvbapi_write_cw(int32_t demux_id, int32_t pid, int32_t stream_id, uint8_t *
  	for(n = 0; n < 2; n++)
  	{
  		// Check if cw has changed and if new cw is empty (all zeros)
@@ -956,7 +956,7 @@ index 7fa6edd7..e349e52d 100644
  		{
  			// prepare ca device
  			uint32_t idx = dvbapi_ca_set_pid(demux_id, pid, stream_id, (algo == CA_ALGO_DES), msgid);
-@@ -7483,7 +7625,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
+@@ -7479,7 +7621,9 @@ void dvbapi_send_dcw(struct s_client *client, ECM_REQUEST *er)
  
  		// 0=matching ecm hash, 2=no filter, 3=table reset, 4=cache-ex response
  		// Check only against last_cw[0] (index 0) - No need to check the rest
@@ -967,7 +967,7 @@ index 7fa6edd7..e349e52d 100644
  		{
  			// check for matching control word
  			if(memcmp(er->cw, demux[i].last_cw[0][0], 8) == 0 &&
-@@ -8486,7 +8630,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
+@@ -8483,7 +8627,9 @@ int32_t dvbapi_check_ecm_delayed_delivery(int32_t demux_id, ECM_REQUEST *er)
  	}
  
  	// Check for null cw
@@ -11805,7 +11805,7 @@ index 7ca98749..d5019205 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 3494942a..f9eae60f 100644
+index 38ff335c..68601984 100644
 --- a/module-webif.c
 +++ b/module-webif.c
 @@ -137,8 +137,9 @@ static bool use_srvid2 = false;
@@ -11928,7 +11928,7 @@ index 3494942a..f9eae60f 100644
  #endif
  					}
  				}
-@@ -7391,6 +7447,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7397,6 +7453,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11938,7 +11938,7 @@ index 3494942a..f9eae60f 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7863,7 +7922,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7869,7 +7928,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11951,7 +11951,7 @@ index 3494942a..f9eae60f 100644
  		}
  
  		if(csystem)
-@@ -9050,7 +9113,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9059,7 +9122,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
@@ -12127,7 +12127,7 @@ index 4096513d..cb8ec85f 100644
  		cs_log_dbg(D_TRACE, "warning: ecm with null odd/even byte from %s", (check_client(er->client) ? er->client->account->usr : "-"));
  		er->rc = E_INVALID;
 diff --git a/oscam-emm.c b/oscam-emm.c
-index f91c0daa..1d3e1e3a 100644
+index 296a5f09..a45ae13f 100644
 --- a/oscam-emm.c
 +++ b/oscam-emm.c
 @@ -40,6 +40,7 @@ static int8_t cs_emmlen_is_blocked(struct s_reader *rdr, int16_t len)
@@ -12138,7 +12138,7 @@ index f91c0daa..1d3e1e3a 100644
  
  	//copied and enhanced from module-dvbapi.c
  	//dvbapi_start_emm_filter()
-@@ -237,6 +238,24 @@ int32_t emm_reader_match(struct s_reader *reader, uint16_t caid, uint32_t provid
+@@ -240,6 +241,24 @@ int32_t emm_reader_match(struct s_reader *reader, uint16_t caid, uint32_t provid
  		rdr_log_dbg(reader, D_EMM, "reader auprovid = %06X fixup to %06X (ignoring last digit)", reader->auprovid, prid);
  	}
  
@@ -12185,7 +12185,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index 5ea33c9d..b719dff5 100644
+index a647a53b..ea17bbdc 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -41,6 +41,10 @@
@@ -12199,7 +12199,7 @@ index 5ea33c9d..b719dff5 100644
  #ifdef WITH_SSL
  #include <openssl/crypto.h>
  #include <openssl/ssl.h>
-@@ -458,6 +462,8 @@ static void write_versionfile(bool use_stdout)
+@@ -453,6 +457,8 @@ static void write_versionfile(bool use_stdout)
  #ifdef WITH_SIGNING
  	write_conf(WITH_SIGNING, "Binary signing support");
  #endif
@@ -12208,7 +12208,7 @@ index 5ea33c9d..b719dff5 100644
  
  	fprintf(fp, "\n");
  	write_conf(MODULE_CAMD33, "camd 3.3x");
-@@ -1677,6 +1683,9 @@ const struct s_cardreader *cardreaders[] =
+@@ -1678,6 +1684,9 @@ const struct s_cardreader *cardreaders[] =
  #ifdef CARDREADER_STINGER
  	&cardreader_stinger,
  #endif
@@ -12218,7 +12218,7 @@ index 5ea33c9d..b719dff5 100644
  
  	NULL
  };
-@@ -1858,6 +1867,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1857,6 +1866,9 @@ int32_t main(int32_t argc, char *argv[])
  
  	init_sidtab();
  	init_readerdb();
