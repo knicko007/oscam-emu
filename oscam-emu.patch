@@ -1,8 +1,8 @@
-patch version: 2.26.01-11923-802 (e29c6da9)
-patch date: 2026-01-12 13:26:57 UTC (+00:00)
+patch version: 2.26.01-11924-802 (ea61ff66)
+patch date: 2026-01-13 12:41:48 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index ebcf9009..0b6e1831 100644
+index 78d1699c..500c00b1 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -539,6 +539,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
@@ -114,7 +114,7 @@ index 3d333a93..08b173ed 100644
  	  1 = send keepalive messages to keep connection to remote CCCam server up, default:0
  
 diff --git a/Makefile b/Makefile
-index 69fc7244..6434ebea 100644
+index 39b8dfa0..b8ad1c5d 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -32,6 +32,9 @@ ifeq "$(shell ./config.sh --enabled WITH_SSL)" "Y"
@@ -127,7 +127,7 @@ index 69fc7244..6434ebea 100644
  ifdef USE_SSL
  	override USE_LIBCRYPTO=1
  endif
-@@ -379,6 +382,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
+@@ -376,6 +379,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
  SRC-$(CONFIG_MODULE_CCCAM) += module-cccam.c
  SRC-$(CONFIG_MODULE_CCCSHARE) += module-cccshare.c
  SRC-$(CONFIG_MODULE_CONSTCW) += module-constcw.c
@@ -466,7 +466,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 57f1e406..615139e6 100644
+index 29276af9..d63a4471 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -479,7 +479,7 @@ index 57f1e406..615139e6 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.01-11923"
+ #define CS_VERSION				"2.26.01-11924"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -523,7 +523,7 @@ index 57f1e406..615139e6 100644
  } S_ENTITLEMENT;
  
  struct s_client;
-@@ -1756,6 +1768,7 @@ struct s_reader										// contains device info, reader info and card info
+@@ -1755,6 +1767,7 @@ struct s_reader										// contains device info, reader info and card info
  	char			cc_build[7];					// cccam build number
  	int8_t			cc_maxhops;						// cccam max distance
  	int8_t			cc_mindown;						// cccam min downhops
@@ -531,7 +531,7 @@ index 57f1e406..615139e6 100644
  	uint32_t		cc_id;
  	int8_t			cc_keepalive;
  	int8_t			cc_hop;							// For non-cccam reader: hop for virtual cards
-@@ -1936,6 +1949,11 @@ struct s_reader										// contains device info, reader info and card info
+@@ -1935,6 +1948,11 @@ struct s_reader										// contains device info, reader info and card info
  #endif
  #ifdef MODULE_GHTTP
  	uint8_t			ghttp_use_ssl;
@@ -543,7 +543,7 @@ index 57f1e406..615139e6 100644
  #endif
  	uint8_t			cnxlastecm;						// == 0 - last ecm has not been paired ecm, > 0 last ecm has been paired ecm
  	LLIST			*emmstat;						// emm stats
-@@ -2470,6 +2488,10 @@ struct s_config
+@@ -2469,6 +2487,10 @@ struct s_config
  #else
  #define DEFAULT_STREAM_SOURCE_PORT 8001 //Enigma2
  #endif
@@ -554,7 +554,7 @@ index 57f1e406..615139e6 100644
  #endif
  
  	int32_t			max_cache_time;					// seconds ecms are stored in ecmcwcache
-@@ -2655,12 +2677,18 @@ bool boxtype_is(const char *boxtype);
+@@ -2654,12 +2676,18 @@ bool boxtype_is(const char *boxtype);
  bool boxname_is(const char *boxname);
  const char *boxtype_get(void);
  const char *boxname_get(void);
@@ -573,7 +573,7 @@ index 57f1e406..615139e6 100644
  static inline bool caid_is_betacrypt(uint16_t caid) { return caid >> 8 == 0x17; }
  static inline bool caid_is_nagra(uint16_t caid) { return caid >> 8 == 0x18; }
  static inline bool caid_is_bulcrypt(uint16_t caid) { return caid == 0x5581 || caid == 0x4AEE; }
-@@ -2678,4 +2706,8 @@ static inline uint8_t get_ecm_mode(const ECM_REQUEST *er) {
+@@ -2677,4 +2705,8 @@ static inline uint8_t get_ecm_mode(const ECM_REQUEST *er) {
  #endif
  const char *get_cardsystem_desc_by_caid(uint16_t caid);
  
@@ -609,7 +609,7 @@ index 9287aed3..04e27699 100644
  		cs_log_dbg(D_CACHEEX, "push received ecm with null odd/even byte from %s", csp ? "csp" : username(cl));
  		cl->cwcacheexerr++;
 diff --git a/module-cccam.c b/module-cccam.c
-index b92afa1e..95cdb4b2 100644
+index b3e55ed2..83515ce8 100644
 --- a/module-cccam.c
 +++ b/module-cccam.c
 @@ -1009,7 +1009,7 @@ int32_t cc_send_cli_data(struct s_client *cl)
@@ -10502,7 +10502,7 @@ index 7b048140..29f96e4e 100644
  int nc_des_encrypt(uint8_t *buffer, int len, uint8_t *deskey);
  int nc_des_decrypt(uint8_t *buffer, int len, uint8_t *deskey);
 diff --git a/module-newcamd.c b/module-newcamd.c
-index fc3f83cf..7c23924c 100644
+index 679f25ac..6495a30e 100644
 --- a/module-newcamd.c
 +++ b/module-newcamd.c
 @@ -1118,6 +1118,13 @@ static int8_t newcamd_auth_client(IN_ADDR_T ip, uint8_t *deskey)
@@ -11964,7 +11964,7 @@ index 3494942a..f9eae60f 100644
  			cs_log("error: too much data received from %s", cs_inet_ntoa(in));
  			NULLFREE(*result);
 diff --git a/oscam-chk.c b/oscam-chk.c
-index 624d1d3f..1b54442a 100644
+index 1f44e3b6..3dd9536a 100644
 --- a/oscam-chk.c
 +++ b/oscam-chk.c
 @@ -894,7 +894,7 @@ int32_t matching_reader(ECM_REQUEST *er, struct s_reader *rdr)
