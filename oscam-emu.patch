@@ -1,8 +1,8 @@
-patch version: 2.26.01-11931-802 (2c8c34c9)
-patch date: 2026-01-14 21:22:38 UTC (+00:00)
+patch version: 2.26.01-11932-802 (5b7ec3c9)
+patch date: 2026-01-15 12:40:53 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5a9c976d..20ecad4e 100644
+index 9c080273..364b5a57 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -539,6 +539,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
@@ -28,7 +28,7 @@ index 5a9c976d..20ecad4e 100644
  execute_process (COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/config.sh --show-valid OUTPUT_VARIABLE config_vars_string OUTPUT_STRIP_TRAILING_WHITESPACE)
  string(REGEX MATCHALL "[A-Z0-9_]+" config_vars ${config_vars_string})
  
-@@ -874,6 +890,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
+@@ -873,6 +889,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
  
  #--------------------------------------------------------------------------------
  
@@ -53,7 +53,7 @@ index 5a9c976d..20ecad4e 100644
  #----------------------- installation -----------------------------
  
  file (GLOB config_files "${CMAKE_CURRENT_SOURCE_DIR}/Distribution/oscam.*")
-@@ -986,4 +1020,11 @@ if (HAVE_LIBDVBCSA)
+@@ -985,4 +1019,11 @@ if (HAVE_LIBDVBCSA)
  	endif(STATICLIBDVBCSA AND NOT LIBDVBCSADIR)
  endif (HAVE_LIBDVBCSA)
  
@@ -114,7 +114,7 @@ index 3d333a93..08b173ed 100644
  	  1 = send keepalive messages to keep connection to remote CCCam server up, default:0
  
 diff --git a/Makefile b/Makefile
-index ea47c289..6827645e 100644
+index eed6ad0b..4f5232d7 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -32,6 +32,9 @@ ifeq "$(shell ./config.sh --enabled WITH_SSL)" "Y"
@@ -368,7 +368,7 @@ index 7b4f4473..ce198371 100644
  //#define WITH_NEUTRINO 1
  #define READ_SDT_CHARSETS 1
 diff --git a/config.sh b/config.sh
-index bc2a882c..c5e38641 100755
+index 50ba6022..b1729dad 100755
 --- a/config.sh
 +++ b/config.sh
 @@ -1,6 +1,6 @@
@@ -430,7 +430,7 @@ index bc2a882c..c5e38641 100755
  	enabled READER_NAGRA_MERLIN && echo "CONFIG_LIB_MDC2=y" || echo "# CONFIG_LIB_MDC2=n"
  	enabled READER_NAGRA_MERLIN && echo "CONFIG_LIB_FAST_AES=y" || echo "# CONFIG_LIB_FAST_AES=n"
  	enabled_any READER_NAGRA_MERLIN WITH_SIGNING && echo "CONFIG_LIB_SHA256=y" || echo "# CONFIG_LIB_SHA256=n"
-@@ -517,6 +522,8 @@ menu_addons() {
+@@ -518,6 +523,8 @@ menu_addons() {
  		IPV6SUPPORT			"IPv6 support (experimental)"					$(check_test "IPV6SUPPORT") \
  		WITH_ARM_NEON		"ARM NEON (SIMD/MPE) support"					$(check_test "WITH_ARM_NEON") \
  		WITH_SIGNING		"Binary signing with X.509 certificate"			$(check_test "WITH_SIGNING") \
@@ -439,7 +439,7 @@ index bc2a882c..c5e38641 100755
  		2> ${tempfile}
  
  	opt=${?}
-@@ -899,11 +906,12 @@ do
+@@ -900,11 +907,12 @@ do
  	;;
  	'-v'|'--oscam-version')
  		version=`grep '^#define CS_VERSION' globals.h | cut -d\" -f2`
@@ -466,7 +466,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 0f3f7e02..3cba1df8 100644
+index e2b84fed..ac01d456 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -479,7 +479,7 @@ index 0f3f7e02..3cba1df8 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.01-11931"
+ #define CS_VERSION				"2.26.01-11932"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
