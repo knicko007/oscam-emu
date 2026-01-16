@@ -1,11 +1,11 @@
-patch version: 2.26.01-11932-802 (5b7ec3c9)
-patch date: 2026-01-15 12:40:53 UTC (+00:00)
+patch version:  ()
+patch date: 2026-01-16 06:22:37 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 9c080273..364b5a57 100644
+index 3e8d3b04..a39b15d0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -539,6 +539,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
+@@ -574,6 +574,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
  # Manage config.h based on command line parameters
  # Manipulate config file based on given parameters and read unset parameters
  
@@ -28,7 +28,7 @@ index 9c080273..364b5a57 100644
  execute_process (COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/config.sh --show-valid OUTPUT_VARIABLE config_vars_string OUTPUT_STRIP_TRAILING_WHITESPACE)
  string(REGEX MATCHALL "[A-Z0-9_]+" config_vars ${config_vars_string})
  
-@@ -873,6 +889,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
+@@ -916,6 +932,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
  
  #--------------------------------------------------------------------------------
  
@@ -53,7 +53,7 @@ index 9c080273..364b5a57 100644
  #----------------------- installation -----------------------------
  
  file (GLOB config_files "${CMAKE_CURRENT_SOURCE_DIR}/Distribution/oscam.*")
-@@ -985,4 +1019,11 @@ if (HAVE_LIBDVBCSA)
+@@ -1028,4 +1062,11 @@ if (HAVE_LIBDVBCSA)
  	endif(STATICLIBDVBCSA AND NOT LIBDVBCSADIR)
  endif (HAVE_LIBDVBCSA)
  
@@ -114,7 +114,7 @@ index 3d333a93..08b173ed 100644
  	  1 = send keepalive messages to keep connection to remote CCCam server up, default:0
  
 diff --git a/Makefile b/Makefile
-index eed6ad0b..4f5232d7 100644
+index 4d1b8127..7a45a3dc 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -32,6 +32,9 @@ ifeq "$(shell ./config.sh --enabled WITH_SSL)" "Y"
@@ -127,7 +127,7 @@ index eed6ad0b..4f5232d7 100644
  ifdef USE_SSL
  	override USE_LIBCRYPTO=1
  endif
-@@ -370,6 +373,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
+@@ -371,6 +374,32 @@ SRC-$(CONFIG_CS_CACHEEX) += module-cccam-cacheex.c
  SRC-$(CONFIG_MODULE_CCCAM) += module-cccam.c
  SRC-$(CONFIG_MODULE_CCCSHARE) += module-cccshare.c
  SRC-$(CONFIG_MODULE_CONSTCW) += module-constcw.c
@@ -346,7 +346,7 @@ index d47df457..5d514452 100644
 +Configuration wiki:
 +   https://wiki.streamboard.tv/wiki/OSCam/de/Config/oscam.conf
 diff --git a/config.h b/config.h
-index 7b4f4473..ce198371 100644
+index 06b18eec..47afd658 100644
 --- a/config.h
 +++ b/config.h
 @@ -1,6 +1,8 @@
@@ -358,7 +358,7 @@ index 7b4f4473..ce198371 100644
  #define WEBIF 1
  #define WEBIF_LIVELOG 1
  #define WEBIF_JQUERY 1
-@@ -8,7 +10,7 @@
+@@ -9,7 +11,7 @@
  //#define WITH_SSL 1
  #if defined(__linux__) || defined(__CYGWIN__)
  #define HAVE_DVBAPI 1
@@ -368,18 +368,20 @@ index 7b4f4473..ce198371 100644
  //#define WITH_NEUTRINO 1
  #define READ_SDT_CHARSETS 1
 diff --git a/config.sh b/config.sh
-index 50ba6022..b1729dad 100755
+old mode 100755
+new mode 100644
+index 855de3d4..2e15225d
 --- a/config.sh
 +++ b/config.sh
 @@ -1,6 +1,6 @@
  #!/bin/sh
  
--addons="WEBIF WEBIF_LIVELOG WEBIF_JQUERY WITH_COMPRESS_WEBIF WITH_SSL HAVE_DVBAPI WITH_EXTENDED_CW WITH_NEUTRINO READ_SDT_CHARSETS CS_ANTICASC WITH_DEBUG MODULE_MONITOR WITH_LB CS_CACHEEX CS_CACHEEX_AIO CW_CYCLE_CHECK LCDSUPPORT LEDSUPPORT CLOCKFIX IPV6SUPPORT WITH_ARM_NEON WITH_SIGNING"
-+addons="WEBIF WEBIF_LIVELOG WEBIF_JQUERY WITH_COMPRESS_WEBIF WITH_SSL HAVE_DVBAPI WITH_EXTENDED_CW WITH_NEUTRINO READ_SDT_CHARSETS CS_ANTICASC WITH_DEBUG MODULE_MONITOR WITH_LB CS_CACHEEX CS_CACHEEX_AIO CW_CYCLE_CHECK LCDSUPPORT LEDSUPPORT CLOCKFIX IPV6SUPPORT WITH_ARM_NEON WITH_SIGNING WITH_EMU WITH_SOFTCAM"
+-addons="WEBIF WEBIF_LIVELOG WEBIF_JQUERY WEBIF_WIKI WITH_COMPRESS_WEBIF WITH_SSL HAVE_DVBAPI WITH_EXTENDED_CW WITH_NEUTRINO READ_SDT_CHARSETS CS_ANTICASC WITH_DEBUG MODULE_MONITOR WITH_LB CS_CACHEEX CS_CACHEEX_AIO CW_CYCLE_CHECK LCDSUPPORT LEDSUPPORT CLOCKFIX IPV6SUPPORT WITH_ARM_NEON WITH_SIGNING"
++addons="WEBIF WEBIF_LIVELOG WEBIF_JQUERY WEBIF_WIKI WITH_COMPRESS_WEBIF WITH_SSL HAVE_DVBAPI WITH_EXTENDED_CW WITH_NEUTRINO READ_SDT_CHARSETS CS_ANTICASC WITH_DEBUG MODULE_MONITOR WITH_LB CS_CACHEEX CS_CACHEEX_AIO CW_CYCLE_CHECK LCDSUPPORT LEDSUPPORT CLOCKFIX IPV6SUPPORT WITH_ARM_NEON WITH_SIGNING WITH_EMU WITH_SOFTCAM"
  protocols="MODULE_CAMD33 MODULE_CAMD35 MODULE_CAMD35_TCP MODULE_NEWCAMD MODULE_CCCAM MODULE_CCCSHARE MODULE_GBOX MODULE_RADEGAST MODULE_SCAM MODULE_SERIAL MODULE_CONSTCW MODULE_PANDORA MODULE_GHTTP MODULE_STREAMRELAY"
  readers="READER_NAGRA READER_NAGRA_MERLIN READER_IRDETO READER_CONAX READER_CRYPTOWORKS READER_SECA READER_VIACCESS READER_VIDEOGUARD READER_DRE READER_TONGFANG READER_BULCRYPT READER_GRIFFIN READER_DGCRYPT"
  card_readers="CARDREADER_PHOENIX CARDREADER_INTERNAL CARDREADER_SC8IN1 CARDREADER_MP35 CARDREADER_SMARGO CARDREADER_DB2COM CARDREADER_STAPI CARDREADER_STAPI5 CARDREADER_STINGER CARDREADER_DRECAS"
-@@ -12,7 +12,7 @@ CONFIG_WEBIF_JQUERY=y
+@@ -13,7 +13,7 @@ CONFIG_WEBIF_JQUERY=y
  CONFIG_WITH_COMPRESS_WEBIF=y
  # CONFIG_WITH_SSL=n
  CONFIG_HAVE_DVBAPI=y
@@ -388,7 +390,7 @@ index 50ba6022..b1729dad 100755
  # CONFIG_WITH_NEUTRINO=n
  CONFIG_READ_SDT_CHARSETS=y
  # CONFIG_CS_ANTICASC=n
-@@ -28,6 +28,8 @@ CONFIG_WITH_LB=y
+@@ -29,6 +29,8 @@ CONFIG_WITH_LB=y
  # CONFIG_IPV6SUPPORT=n
  # CONFIG_WITH_ARM_NEON=n
  # CONFIG_WITH_SIGNING=n
@@ -397,7 +399,7 @@ index 50ba6022..b1729dad 100755
  # CONFIG_MODULE_CAMD33=n
  CONFIG_MODULE_CAMD35=y
  CONFIG_MODULE_CAMD35_TCP=y
-@@ -328,14 +330,17 @@ get_opts() {
+@@ -329,8 +331,8 @@ get_opts() {
  
  update_deps() {
  	# Calculate dependencies
@@ -407,7 +409,8 @@ index 50ba6022..b1729dad 100755
 +	disabled_all $(get_opts readers) $(get_opts card_readers) WITH_EMU && disable_opt WITH_CARDREADER >/dev/null
  	disabled WEBIF && disable_opt WEBIF_LIVELOG >/dev/null
  	disabled WEBIF && disable_opt WEBIF_JQUERY >/dev/null
- 	enabled MODULE_CCCSHARE && enable_opt MODULE_CCCAM >/dev/null
+ 	disabled WEBIF && disable_opt WEBIF_WIKI >/dev/null
+@@ -339,6 +341,9 @@ update_deps() {
  	enabled_any CARDREADER_DB2COM CARDREADER_MP35 CARDREADER_SC8IN1 CARDREADER_STINGER && enable_opt CARDREADER_PHOENIX >/dev/null
  	enabled CS_CACHEEX_AIO && enable_opt CS_CACHEEX >/dev/null
  	enabled WITH_SIGNING && enable_opt WITH_SSL >/dev/null
@@ -417,7 +420,7 @@ index 50ba6022..b1729dad 100755
  }
  
  list_config() {
-@@ -387,9 +392,9 @@ list_config() {
+@@ -390,9 +395,9 @@ list_config() {
  	not_have_flag USE_LIBCRYPTO && echo "CONFIG_LIB_AES=y" || echo "# CONFIG_LIB_AES=n"
  	enabled MODULE_CCCAM && echo "CONFIG_LIB_RC6=y" || echo "# CONFIG_LIB_RC6=n"
  	not_have_flag USE_LIBCRYPTO && enabled MODULE_CCCAM && echo "CONFIG_LIB_SHA1=y" || echo "# CONFIG_LIB_SHA1=n"
@@ -430,7 +433,7 @@ index 50ba6022..b1729dad 100755
  	enabled READER_NAGRA_MERLIN && echo "CONFIG_LIB_MDC2=y" || echo "# CONFIG_LIB_MDC2=n"
  	enabled READER_NAGRA_MERLIN && echo "CONFIG_LIB_FAST_AES=y" || echo "# CONFIG_LIB_FAST_AES=n"
  	enabled_any READER_NAGRA_MERLIN WITH_SIGNING && echo "CONFIG_LIB_SHA256=y" || echo "# CONFIG_LIB_SHA256=n"
-@@ -518,6 +523,8 @@ menu_addons() {
+@@ -522,6 +527,8 @@ menu_addons() {
  		IPV6SUPPORT			"IPv6 support (experimental)"					$(check_test "IPV6SUPPORT") \
  		WITH_ARM_NEON		"ARM NEON (SIMD/MPE) support"					$(check_test "WITH_ARM_NEON") \
  		WITH_SIGNING		"Binary signing with X.509 certificate"			$(check_test "WITH_SIGNING") \
@@ -439,7 +442,7 @@ index 50ba6022..b1729dad 100755
  		2> ${tempfile}
  
  	opt=${?}
-@@ -900,11 +907,12 @@ do
+@@ -904,11 +911,12 @@ do
  	;;
  	'-v'|'--oscam-version')
  		version=`grep '^#define CS_VERSION' globals.h | cut -d\" -f2`
@@ -466,7 +469,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index e2b84fed..ac01d456 100644
+index 17390149..95cdde09 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -479,7 +482,7 @@ index e2b84fed..ac01d456 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.01-11932"
+ #define CS_VERSION				"2.26.01-11933"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -11793,7 +11796,7 @@ index f43ff557..2f0e1b16 100644
  
  #endif // MODULE_STREAMRELAY_H_
 diff --git a/module-webif-tpl.c b/module-webif-tpl.c
-index 7ca98749..d5019205 100644
+index 7bdc6da3..bd13862c 100644
 --- a/module-webif-tpl.c
 +++ b/module-webif-tpl.c
 @@ -456,6 +456,7 @@ char *tpl_getUnparsedTpl(const char *name, int8_t removeHeader, const char *subd
@@ -11805,10 +11808,10 @@ index 7ca98749..d5019205 100644
  										if(ok == 0)
  										{
 diff --git a/module-webif.c b/module-webif.c
-index 8feb124b..788388e3 100644
+index 376fe793..203395c7 100644
 --- a/module-webif.c
 +++ b/module-webif.c
-@@ -137,8 +137,9 @@ static bool use_srvid2 = false;
+@@ -141,8 +141,9 @@ static bool use_srvid2 = false;
  #define MNU_GBX_FSTAINF     27
  #define MNU_GBX_FEXPINF     28
  #define MNU_GBX_INFOLOG     29
@@ -11819,7 +11822,7 @@ index 8feb124b..788388e3 100644
  
  static void set_status_info_var(struct templatevars *vars, char *varname, int no_data, char *fmt, double value)
  {
-@@ -1328,6 +1329,11 @@ static char *send_oscam_config_streamrelay(struct templatevars *vars, struct uri
+@@ -1332,6 +1333,11 @@ static char *send_oscam_config_streamrelay(struct templatevars *vars, struct uri
  
  	tpl_printf(vars, TPLADD, "STREAM_RELAY_BUFFER_TIME", "%d", cfg.stream_relay_buffer_time);
  	tpl_printf(vars, TPLADD, "STREAM_RELAY_RECONNECT_COUNT", "%d", cfg.stream_relay_reconnect_count);
@@ -11831,7 +11834,7 @@ index 8feb124b..788388e3 100644
  
  	tpl_printf(vars, TPLADD, "TMP", "STREAMCONFIGCLIENTSELECTED%d", cfg.stream_display_client);
  	tpl_addVar(vars, TPLADD, tpl_getVar(vars, "TMP"), "selected");
-@@ -2447,7 +2453,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -2451,7 +2457,7 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  		chk_reader("services", servicelabels, rdr);
  		chk_reader("lb_whitelist_services", servicelabelslb, rdr);
  
@@ -11840,7 +11843,7 @@ index 8feb124b..788388e3 100644
  		{
  			if(rdr)
  				{
-@@ -3239,6 +3245,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3243,6 +3249,8 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_printf(vars, TPLADD, "RESHARE",      "%d", cfg.cc_reshare);
  	tpl_printf(vars, TPLADD, "CCCRECONNECT", "%d", rdr->cc_reconnect);
  
@@ -11849,7 +11852,7 @@ index 8feb124b..788388e3 100644
  	if(rdr->cc_keepalive)
  		{ tpl_addVar(vars, TPLADD, "KEEPALIVECHECKED", "checked"); }
  #endif
-@@ -3276,6 +3284,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3280,6 +3288,23 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	tpl_addVar(vars, TPLADD, "USERSCRIPT", rdr->userscript);
  #endif
  
@@ -11873,7 +11876,7 @@ index 8feb124b..788388e3 100644
  	tpl_addVar(vars, TPLADD, "PROTOCOL", reader_get_type_desc(rdr, 0));
  
  	// Show only parameters which needed for the reader
-@@ -3297,6 +3322,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
+@@ -3301,6 +3326,9 @@ static char *send_oscam_reader_config(struct templatevars *vars, struct uriparam
  	case R_CAMD35 :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCAMD35BIT"));
  		break;
@@ -11883,7 +11886,7 @@ index 8feb124b..788388e3 100644
  	case R_CS378X :
  		tpl_addVar(vars, TPLAPPEND, "READERDEPENDINGCONFIG", tpl_getTpl(vars, "READERCONFIGCS378XBIT"));
  		break;
-@@ -5330,9 +5358,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
+@@ -5334,9 +5362,34 @@ static char *send_oscam_entitlement(struct templatevars *vars, struct uriparams
  
  					tpl_addVar(vars, TPLAPPEND, "LOGHISTORY", "<BR><BR>New Structure:<BR>");
  					char tbuffer[83];
@@ -11918,7 +11921,7 @@ index 8feb124b..788388e3 100644
  						localtime_r(&item->start, &start_t);
  						localtime_r(&item->end, &end_t);
  
-@@ -5829,6 +5882,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
+@@ -5833,6 +5886,9 @@ static char *send_oscam_status(struct templatevars * vars, struct uriparams * pa
  						filtered = (type == cl->typ) || (type == 'x' && (cl->typ == 'p' || cl->typ == 'r') && (cl->reader && cl->reader->cacheex.mode));
  #else
  						filtered = (type == cl->typ);
@@ -11928,7 +11931,7 @@ index 8feb124b..788388e3 100644
  #endif
  					}
  				}
-@@ -7420,6 +7476,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
+@@ -7424,6 +7480,9 @@ static char *send_oscam_files(struct templatevars * vars, struct uriparams * par
  		{ "stats.info",      MNU_GBX_FSTAINF,   FTYPE_GBOX },     // id 27
  		{ "expired.info",    MNU_GBX_FEXPINF,   FTYPE_GBOX },     // id 28
  		{ "info.log",        MNU_GBX_INFOLOG,   FTYPE_GBOX },     // id 29
@@ -11938,7 +11941,7 @@ index 8feb124b..788388e3 100644
  #endif
  		{ NULL, 0, 0 },
  	};
-@@ -7892,7 +7951,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
+@@ -7896,7 +7955,11 @@ static char *send_oscam_EMM_running(struct templatevars * vars, struct uriparams
  		else if(!proxy && rdr->csystem_active)     // local active reader
  		{
  			csystem = rdr->csystem;
@@ -11951,7 +11954,7 @@ index 8feb124b..788388e3 100644
  		}
  
  		if(csystem)
-@@ -9084,7 +9147,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
+@@ -9190,7 +9253,11 @@ static int32_t readRequest(FILE * f, IN_ADDR_T in, char **result, int8_t forcePl
  		memcpy(*result + bufsize, buf2, n);
  		bufsize += n;
  
@@ -12185,10 +12188,10 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index a647a53b..ea17bbdc 100644
+index 1385bd0d..4397bb88 100644
 --- a/oscam.c
 +++ b/oscam.c
-@@ -41,6 +41,10 @@
+@@ -44,6 +44,10 @@
  #include "reader-common.h"
  #include "module-gbox.h"
  
@@ -12199,7 +12202,7 @@ index a647a53b..ea17bbdc 100644
  #ifdef WITH_SSL
  #include <openssl/crypto.h>
  #include <openssl/ssl.h>
-@@ -453,6 +457,8 @@ static void write_versionfile(bool use_stdout)
+@@ -457,6 +461,8 @@ static void write_versionfile(bool use_stdout)
  #ifdef WITH_SIGNING
  	write_conf(WITH_SIGNING, "Binary signing support");
  #endif
@@ -12208,7 +12211,7 @@ index a647a53b..ea17bbdc 100644
  
  	fprintf(fp, "\n");
  	write_conf(MODULE_CAMD33, "camd 3.3x");
-@@ -1678,6 +1684,9 @@ const struct s_cardreader *cardreaders[] =
+@@ -1682,6 +1688,9 @@ const struct s_cardreader *cardreaders[] =
  #ifdef CARDREADER_STINGER
  	&cardreader_stinger,
  #endif
@@ -12218,7 +12221,7 @@ index a647a53b..ea17bbdc 100644
  
  	NULL
  };
-@@ -1857,6 +1866,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1861,6 +1870,9 @@ int32_t main(int32_t argc, char *argv[])
  
  	init_sidtab();
  	init_readerdb();
@@ -12326,7 +12329,7 @@ index 00000000..cf718779
 @@ -0,0 +1 @@
 +			<LI CLASS="##CMENUACTIVE30##"><A HREF="files.html?file=SoftCam.Key">SoftCam.Key</A></LI>
 diff --git a/webif/pages_index.txt b/webif/pages_index.txt
-index a104089b..fd1c857e 100644
+index fbf1d18b..654fc692 100644
 --- a/webif/pages_index.txt
 +++ b/webif/pages_index.txt
 @@ -1,10 +1,10 @@
