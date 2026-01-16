@@ -1,5 +1,5 @@
-patch version:  ()
-patch date: 2026-01-16 06:22:37 UTC (+00:00)
+patch version: 2.26.01-11933-802 (bf023d8c)
+patch date: 2026-01-16 06:35:39 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 3e8d3b04..a39b15d0 100644
@@ -368,9 +368,7 @@ index 06b18eec..47afd658 100644
  //#define WITH_NEUTRINO 1
  #define READ_SDT_CHARSETS 1
 diff --git a/config.sh b/config.sh
-old mode 100755
-new mode 100644
-index 855de3d4..2e15225d
+index 855de3d4..2e15225d 100755
 --- a/config.sh
 +++ b/config.sh
 @@ -1,6 +1,6 @@
