@@ -1,5 +1,5 @@
-patch version: 2.26.04-11949-802 (53e2466a)
-patch date: 2026-04-12 20:17:55 UTC (+00:00)
+patch version: 2.26.04-11950-802 (783ef1bc)
+patch date: 2026-04-16 19:08:37 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index c27d1cb1..b1f5b6d0 100644
@@ -470,7 +470,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index 2381d84b..c99773f9 100644
+index 0a4ba1aa..c6c52581 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -483,7 +483,7 @@ index 2381d84b..c99773f9 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.04-11949"
+ #define CS_VERSION				"2.26.04-11950"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -12196,7 +12196,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index 1bf0781d..2a94e5ed 100644
+index fc49e516..cbce0568 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -44,6 +44,10 @@
@@ -12219,7 +12219,7 @@ index 1bf0781d..2a94e5ed 100644
  
  	fprintf(fp, "\n");
  	write_conf(MODULE_CAMD33, "camd 3.3x");
-@@ -1688,6 +1694,9 @@ const struct s_cardreader *cardreaders[] =
+@@ -1685,6 +1691,9 @@ const struct s_cardreader *cardreaders[] =
  #ifdef CARDREADER_STINGER
  	&cardreader_stinger,
  #endif
@@ -12229,7 +12229,7 @@ index 1bf0781d..2a94e5ed 100644
  
  	NULL
  };
-@@ -1867,6 +1876,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1864,6 +1873,9 @@ int32_t main(int32_t argc, char *argv[])
  
  	init_sidtab();
  	init_readerdb();
