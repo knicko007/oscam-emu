@@ -1,8 +1,8 @@
-patch version: 2.26.04-11953-802 (f4316e45)
-patch date: 2026-04-21 19:08:17 UTC (+00:00)
+patch version: 2.26.04-11954-802 (f30eebf5)
+patch date: 2026-04-24 18:45:13 UTC (+00:00)
 ---
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5c3a2754..c39b602e 100644
+index b9aea45f..5143d289 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -645,6 +645,22 @@ endif (CONFIG_STREAMRELAY MATCHES "Y" AND NOT MODULE_STREAMRELAY EQUAL 1)
@@ -28,7 +28,7 @@ index 5c3a2754..c39b602e 100644
  execute_process (COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/config.sh --show-valid OUTPUT_VARIABLE config_vars_string OUTPUT_STRIP_TRAILING_WHITESPACE)
  string(REGEX MATCHALL "[A-Z0-9_]+" config_vars ${config_vars_string})
  
-@@ -995,6 +1011,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
+@@ -1014,6 +1030,24 @@ endif( HAVE_LIBRT OR HAVE_LIBRT_STATIC)
  
  #--------------------------------------------------------------------------------
  
@@ -53,7 +53,7 @@ index 5c3a2754..c39b602e 100644
  #----------------------- installation -----------------------------
  
  file (GLOB config_files "${CMAKE_CURRENT_SOURCE_DIR}/Distribution/oscam.*")
-@@ -1116,4 +1150,11 @@ if (HAVE_LIBDVBCSA)
+@@ -1135,4 +1169,11 @@ if (HAVE_LIBDVBCSA)
  	endif (LIBDVBCSADIR)
  endif (HAVE_LIBDVBCSA)
  
@@ -114,7 +114,7 @@ index a43c9db6..4b5d2a76 100644
  	  1 = send keepalive messages to keep connection to remote CCCam server up, default:0
  
 diff --git a/Makefile b/Makefile
-index 2a637ded..49780266 100644
+index 5e8eea0e..aee54e8c 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -32,6 +32,9 @@ ifeq "$(shell ./config.sh --enabled WITH_SSL)" "Y"
@@ -470,7 +470,7 @@ index 4cda2edd..6cd27dae 100644
  
  #endif
 diff --git a/globals.h b/globals.h
-index f69acb64..a0c3fb3a 100644
+index 88fd4853..58e88b81 100644
 --- a/globals.h
 +++ b/globals.h
 @@ -368,9 +368,9 @@
@@ -483,7 +483,7 @@ index f69acb64..a0c3fb3a 100644
 -#define BOARD_URL				"https://board.streamboard.tv"
 +#define BOARD_URL				"https://github.com/oscam-mirror/oscam-emu/discussions"
  #ifndef CS_VERSION
- #define CS_VERSION				"2.26.04-11953"
+ #define CS_VERSION				"2.26.04-11954"
  #endif
 @@ -407,14 +407,18 @@
  #define CS_ECM_RINGBUFFER_MAX	0x10	// max size for ECM last responsetimes ringbuffer. Keep this set to power of 2 values!
@@ -12196,7 +12196,7 @@ index 576804c9..6e1c7137 100644
  	return "unknown";
  }
 diff --git a/oscam.c b/oscam.c
-index 69193412..96df7f0c 100644
+index ce936a44..2f757fda 100644
 --- a/oscam.c
 +++ b/oscam.c
 @@ -44,6 +44,10 @@
@@ -12219,7 +12219,7 @@ index 69193412..96df7f0c 100644
  
  	fprintf(fp, "\n");
  	write_conf(MODULE_CAMD33, "camd 3.3x");
-@@ -1684,6 +1690,9 @@ const struct s_cardreader *cardreaders[] =
+@@ -1683,6 +1689,9 @@ const struct s_cardreader *cardreaders[] =
  #ifdef CARDREADER_STINGER
  	&cardreader_stinger,
  #endif
@@ -12229,7 +12229,7 @@ index 69193412..96df7f0c 100644
  
  	NULL
  };
-@@ -1862,6 +1871,9 @@ int32_t main(int32_t argc, char *argv[])
+@@ -1861,6 +1870,9 @@ int32_t main(int32_t argc, char *argv[])
  
  	init_sidtab();
  	init_readerdb();
